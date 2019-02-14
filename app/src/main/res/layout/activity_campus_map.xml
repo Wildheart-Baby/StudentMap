@@ -5,4 +5,11 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    map:mapType="none"
+    map:uiCompass="false"
+    map:uiRotateGestures="false"
+    map:uiScrollGestures="false"
+    map:uiTiltGestures="false"
+    map:uiZoomControls="false"
+    map:cameraZoom="20"
     tools:context="com.example.v8181191.studentmap.CampusMap" />
