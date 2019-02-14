@@ -1,16 +1,22 @@
 package com.example.v8181191.studentmap;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -21,11 +27,22 @@ import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class CampusMap extends FragmentActivity implements OnMapReadyCallback {
+public class CampusMap extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleMap mMap;
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private final String TAG = "StudentMapApp";
+    private android.location.Location mCurrentLocation;
+    LatLng llCurrentLocation;
+    Marker mCurrLocationMarker;
+
+
+    //private LatLngBounds CampusBounds = new LatLngBounds(
+    //        new LatLng(54.573043, -1.237703), new LatLng(54.567806, -1.233483));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +52,12 @@ public class CampusMap extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
     }
 
@@ -51,6 +74,8 @@ public class CampusMap extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        //mMap.setMaxZoomPreference(20.0f);
         //top left 54.573043, -1.237703
         //bottom right 54.567806, -1.233483
         //54.570543, -1.235653
@@ -79,13 +104,13 @@ public class CampusMap extends FragmentActivity implements OnMapReadyCallback {
             Log.e("StudentMap", "Can't find style. Error: ", e);
         }
 
-        LatLng topLeft = new LatLng(54.573043, -1.237703);
+        /*LatLng topLeft = new LatLng(54.573043, -1.237703);
         LatLng bottomRight = new LatLng(54.567806, -1.233483);
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(topLeft);
         builder.include(bottomRight);
-        builder.build();
+        builder.build();*/
 
         LatLng campus = new LatLng(54.570254, -1.235165);
         LatLng library = new LatLng(54.569941, -1.236059);
@@ -106,14 +131,78 @@ public class CampusMap extends FragmentActivity implements OnMapReadyCallback {
 
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(campus));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(campus, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(campus, 16.5f));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
         GroundOverlayOptions campusMap = new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(R.drawable.campusmap))
-                .position(campus, 500f, 581f);
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.campusmap2))
+                .position(campus, 410f, 520f);
         mMap.addGroundOverlay(campusMap);
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
 
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(5000);
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        //mMap.setMyLocationEnabled(true);
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        CharSequence text = "onConnectionSuspended executed";
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(this, text, duration);
+        //toast.show();
+        Log.i(TAG, "GoogleApiClient connection has been suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        CharSequence text = "onConnectionFailed";
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(this, text, duration);
+        //toast.show();
+        Log.i(TAG, "GoogleApiClinet connection has failed");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        this.mCurrentLocation = location;
+        if (mCurrLocationMarker != null)
+        {
+            mCurrLocationMarker.remove();
+        }
+
+
+        llCurrentLocation = new LatLng(this.mCurrentLocation.getLatitude(), this.mCurrentLocation.getLongitude());
+        mMap.addMarker(new MarkerOptions()
+                .position(llCurrentLocation)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker)));
+
+    }
 }

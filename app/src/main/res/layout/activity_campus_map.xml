@@ -11,5 +11,4 @@
     map:uiScrollGestures="false"
     map:uiTiltGestures="false"
     map:uiZoomControls="false"
-    map:cameraZoom="20"
     tools:context="com.example.v8181191.studentmap.CampusMap" />
