@@ -35,12 +35,11 @@
 
         <activity
             android:name=".CurrentLocation"
-            android:label="@string/title_activity_current_location">
-
-        </activity>
+            android:label="@string/title_activity_current_location" />
         <activity
             android:name=".CampusMap"
-            android:label="@string/title_activity_campus_map">
+            android:label="@string/title_activity_campus_map"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

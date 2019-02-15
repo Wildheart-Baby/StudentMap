@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">StudentMap</string>
+    <string name="app_name">Student Map</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_current_location">Map</string>
-    <string name="title_activity_campus_map">Map</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_campus_map">Student Map</string>
+    <string name="title_activity_maps">Student Map</string>
+    <string name="title_activity_place_search">PlaceSearch</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
