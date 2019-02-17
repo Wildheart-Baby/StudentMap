@@ -20,6 +20,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_campus_map" />
+    <include layout="@layout/content_campus_map3" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/place_autocomplete_prediction_primary_text_highlight"
+        app:srcCompat="@drawable/location_icon" />
 
 </android.support.design.widget.CoordinatorLayout>
