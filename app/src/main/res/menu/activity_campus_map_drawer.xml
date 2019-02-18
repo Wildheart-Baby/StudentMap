@@ -22,8 +22,9 @@
             android:title="Tools" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
+    <group
+        android:checkable="false"
+        android:title="Building Key">
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
@@ -32,7 +33,7 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
-        </menu>
-    </item>
+
+    </group>
 
 </menu>

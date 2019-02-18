@@ -8,18 +8,30 @@
     tools:context="com.example.v8181191.studentmap.CampusMap"
     tools:showIn="@layout/app_bar_campus_map">
 
-    <fragment
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    map:mapType="none"
-    map:uiCompass="false"
-    map:uiRotateGestures="false"
-    map:uiScrollGestures="false"
-    map:uiTiltGestures="false"
-    map:uiZoomControls="false"
-    tools:context="com.example.v8181191.studentmap.CampusMap"
-    tools:showIn="@layout/app_bar_campus_map"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            map:mapType="none"
+            map:uiCompass="false"
+            map:uiRotateGestures="false"
+            map:uiScrollGestures="false"
+            map:uiTiltGestures="false"
+            map:uiZoomControls="false"
+            tools:context="com.example.v8181191.studentmap.CampusMap"
+            tools:showIn="@layout/app_bar_campus_map" />
+
+        <ImageView
+            android:id="@+id/imgOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            map:srcCompat="@drawable/campusmap" />
+    </FrameLayout>
 
 </RelativeLayout>
