@@ -3,4 +3,8 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
+    <style name="MapLoadTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/map_load_splash</item>
+    </style>
+
 </resources>

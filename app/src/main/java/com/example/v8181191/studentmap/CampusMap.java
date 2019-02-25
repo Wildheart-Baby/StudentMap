@@ -3,6 +3,7 @@ package com.example.v8181191.studentmap;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
@@ -52,6 +53,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     private android.location.Location mCurrentLocation;
     LatLng llCurrentLocation;
     Marker mCurrLocationMarker;
+    DrawerLayout drawer;
+    NavigationView navigationView;
 
     LatLng campus;
 
@@ -90,15 +93,6 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -109,12 +103,23 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMinZoomPreference(16.0f);
+        mMap.setMinZoomPreference(16.20f);
         mMap.setMaxZoomPreference(20.0f);
         //mMap.setMaxZoomPreference(20.0f);
         //top left 54.573043, -1.237703
@@ -764,36 +769,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
             }
         });
 
-        mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
-            @Override
-            public void onPolygonClick(Polygon polygon) {
-                if (polygon.getTag() != null) {
-                    type = polygon.getTag().toString();
-                }
-                //AlertDialog.Builder builder = new AlertDialog.Builder(CampusMap.this);
-                switch (type) {
-                    case "1":
-                        Toast.makeText(getApplicationContext(), "The Curve", Toast.LENGTH_SHORT).show();
-                        break;
-                    case "2":
-                        Toast.makeText(getApplicationContext(), "The Library", Toast.LENGTH_SHORT).show();
-                        break;
-                    case "3":
-                        Toast.makeText(getApplicationContext(), "Students Union", Toast.LENGTH_SHORT).show();
-                        break;
-                    case "4":
-                        Toast.makeText(getApplicationContext(), "Greig", Toast.LENGTH_SHORT).show();
-                        break;
-                    case "5":
-                        Toast.makeText(getApplicationContext(), "Europa", Toast.LENGTH_SHORT).show();
-                        break;
-                    case"14":
-                        Toast.makeText(getApplicationContext(), "Middlesborough Tower", Toast.LENGTH_SHORT).show();
-                        break;
-                }
 
-            }
-        });
 
         //building site
         mMap.addPolygon(new PolygonOptions()
@@ -1038,6 +1014,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeColor(Color.GRAY)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));*/
+
+        Resources.Theme theme = super.getTheme();
+        theme.applyStyle(R.style.CampusPreload, true);
+        //navigationView.setBackgroundResource(R.drawable.drawer_background);
+        navigationView.setBackgroundColor(R.color.cardview_light_background);
 
     }
 

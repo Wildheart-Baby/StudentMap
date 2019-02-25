@@ -139,21 +139,20 @@ public class CampusMapFragment extends Fragment implements GoogleApiClient.Conne
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                mMap.setMinZoomPreference(16.0f);
-                mMap.setMaxZoomPreference(20.0f);
+                mMap.setMinZoomPreference(16.25f);
+                mMap.setMaxZoomPreference(18.0f);
 
-                addBuildings();
-
-                resetCamera();
                 mGoogleApiClient.connect();
+                resetCamera();
+                addBuildings();
 
             }
         });
 
-
-
         return campusMapView;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

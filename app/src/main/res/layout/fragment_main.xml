@@ -6,7 +6,7 @@
 
 
     <fragment
-        android:id="@+id/frgCampus"
+        android:id="@+id/fragment2"
         android:name="com.example.v8181191.studentmap.CampusMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

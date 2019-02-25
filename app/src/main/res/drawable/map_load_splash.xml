@@ -3,8 +3,8 @@
  <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/overlay2"
+            android:src="@drawable/map_load_overlay"
             />
-    </item>
+ </item>
 
 </layer-list>
