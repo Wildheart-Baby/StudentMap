@@ -2,12 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.v8181191.studentmap.MainActivity">
     <item
-        android:id="@+id/action_example"
-        android:showAsAction="withText|ifRoom"
-        android:title="@string/action_example" />
-    <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_campus_map"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings" />
+        android:title="@string/action_campus_map" />
+    <item
+        android:id="@+id/action_current_Location"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+        android:title="@string/action_current_location" />
+    <item
+        android:id="@+id/action_place_search"
+        android:orderInCategory="102"
+        android:showAsAction="never"
+        android:title="@string/action_place_search"/>
 </menu>

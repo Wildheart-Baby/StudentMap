@@ -1,6 +1,7 @@
 package com.example.v8181191.studentmap;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -61,13 +63,16 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     Polygon building1, building2, building3, building4, building5, building6, building7, building8, building9, building10, building11, building12, building13, building14;
     Polygon building15, building16, building17, building18, building19,building20, building21, building22, building23, building24, building25, building26, building27;
 
-    String type;
+    String type, d;
+    TextView distance_overlay;
+    Double locLat, locLong, campusCentre, distance;
 
     private static final int COLOR_ORANGE_ARGB = 0xFFF25E21;
     private static final int COLOR_ROAD_ARGB = 0xff4D5156;
     private static final int COLOR_GRASS_ARGB = 0xff6BBF5C;
     private static final int COLOR_BUILDING_ARGB = 0xffEFEC68;
     private static final int POLYGON_STROKE_WIDTH_PX = 0;
+    private static final int COLOR_PATH_WHITE = 0xffFFFFFF;
 
 
     //private LatLngBounds CampusBounds = new LatLngBounds(
@@ -85,6 +90,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         campus = new LatLng(54.570792, -1.234907);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        distance_overlay = findViewById(R.id.lblDistanceOverlay);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -244,6 +250,36 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .position(llCurrentLocation)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_marker)));
 
+        locLat = mCurrentLocation.getLatitude();
+        locLong = mCurrentLocation.getLongitude();
+
+        distance_calc();
+
+    }
+
+    public void distance_calc(){        //this calculates the distance from the centre of campus and the user's current location
+        double dLat = Math.toRadians(54.570792 - locLat);
+        double dLon = Math.toRadians(-1.234907 - locLong);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(locLat)) * Math.cos(Math.toRadians(54.570792)) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c2 = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        //6378.1 is gravity of earth
+        distance =  c2*6378.1;
+        distance = distance * 0.621371;
+        campusCentre = distance * 1609.34;
+
+        if (campusCentre > 200.001){
+            distance_overlay.setVisibility(View.VISIBLE);
+            d = String.format("%.2f", distance);
+            d = d + " miles from campus";
+            distance_overlay.setText(d);
+        } else if (campusCentre < 200.000){
+            distance_overlay.setVisibility(View.INVISIBLE);
+            d = String.format("%.0f", campusCentre);
+            distance_overlay.setText("");
+        }
     }
 
     public void addBuildings(){
@@ -384,7 +420,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         building3.setTag("3");
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.570126,-1.234845))
-                .title("Studen Union")
+                .title("Student Union")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.three_marker)));
 
         building4 = mMap.addPolygon(new PolygonOptions()
@@ -941,6 +977,218 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeColor(COLOR_ROAD_ARGB)
                 .strokeWidth(2));
 
+        //grass area
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.571704,-1.237429),
+                new LatLng(54.571652,-1.236674),
+                new LatLng(54.571672,-1.236711),
+                new LatLng(54.571754,-1.236754),
+                new LatLng(54.571808,-1.236776),
+                new LatLng(54.571864,-1.236811),
+                new LatLng(54.571915,-1.236843),
+                new LatLng(54.571955,-1.236872),
+                new LatLng(54.571993,-1.236914),
+                new LatLng(54.572021,-1.236945),
+                new LatLng(54.572037,-1.236967),
+                new LatLng(54.572049,-1.236982),
+                new LatLng(54.57205,-1.237004),
+                new LatLng(54.572042,-1.237039),
+                new LatLng(54.572034,-1.237081),
+                new LatLng(54.572006,-1.237127),
+                new LatLng(54.571969,-1.237166),
+                new LatLng(54.571938,-1.237212),
+                new LatLng(54.571908,-1.237248),
+                new LatLng(54.571883,-1.237298),
+                new LatLng(54.571863,-1.237342),
+                new LatLng(54.571841,-1.237365),
+                new LatLng(54.571826,-1.237377),
+                new LatLng(54.571806,-1.237397),
+                new LatLng(54.571782,-1.237409),
+                new LatLng(54.571753,-1.237419))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.571678,-1.236661),
+                    new LatLng(54.572051,-1.236573),
+                    new LatLng(54.57203,-1.236254),
+                    new LatLng(54.572063,-1.236249),
+                    new LatLng(54.572068,-1.23627),
+                    new LatLng(54.572077,-1.236299),
+                    new LatLng(54.572089,-1.236336),
+                    new LatLng(54.572098,-1.236368),
+                    new LatLng(54.572106,-1.236393),
+                    new LatLng(54.572115,-1.236415),
+                    new LatLng(54.572131,-1.236453),
+                    new LatLng(54.572139,-1.236468),
+                    new LatLng(54.572143,-1.236546),
+                    new LatLng(54.572147,-1.236613),
+                    new LatLng(54.572152,-1.236709),
+                    new LatLng(54.572147,-1.236745),
+                    new LatLng(54.572137,-1.236786),
+                    new LatLng(54.572129,-1.236821),
+                    new LatLng(54.572122,-1.236843),
+                    new LatLng(54.572115,-1.236874),
+                    new LatLng(54.572102,-1.236881),
+                    new LatLng(54.57208,-1.236866),
+                    new LatLng(54.572056,-1.236861),
+                    new LatLng(54.572047,-1.236871),
+                    new LatLng(54.57203,-1.236888),
+                    new LatLng(54.572018,-1.236897),
+                    new LatLng(54.571954,-1.236835),
+                    new LatLng(54.571885,-1.236785),
+                    new LatLng(54.571805,-1.236737),
+                    new LatLng(54.571767,-1.236726),
+                    new LatLng(54.571724,-1.236713),
+                    new LatLng(54.571701,-1.236701),
+                    new LatLng(54.571687,-1.236686))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
+
+        mMap.addPolygon(new PolygonOptions()
+                        .add(new LatLng(54.571638,-1.237535),
+                            new LatLng(54.571637,-1.237509),
+                            new LatLng(54.571642,-1.237495),
+                            new LatLng(54.571647,-1.237481),
+                            new LatLng(54.571649,-1.237474),
+                            new LatLng(54.571696,-1.237463),
+                            new LatLng(54.57174,-1.237457),
+                            new LatLng(54.571769,-1.237448),
+                            new LatLng(54.57179,-1.237443),
+                            new LatLng(54.57181,-1.237428),
+                            new LatLng(54.571842,-1.237404),
+                            new LatLng(54.571865,-1.237372),
+                            new LatLng(54.571883,-1.237347),
+                            new LatLng(54.571902,-1.237308),
+                            new LatLng(54.571922,-1.237275),
+                            new LatLng(54.57195,-1.237233),
+                            new LatLng(54.571982,-1.237195),
+                            new LatLng(54.571997,-1.237177),
+                            new LatLng(54.572023,-1.237153),
+                            new LatLng(54.57204,-1.237135),
+                            new LatLng(54.572058,-1.23711),
+                            new LatLng(54.572073,-1.237095),
+                            new LatLng(54.572089,-1.237082),
+                            new LatLng(54.572107,-1.237088),
+                            new LatLng(54.572135,-1.237096),
+                            new LatLng(54.572158,-1.237107),
+                            new LatLng(54.572181,-1.237121),
+                            new LatLng(54.572203,-1.237134),
+                            new LatLng(54.57222,-1.23715),
+                            new LatLng(54.572239,-1.237174),
+                            new LatLng(54.572253,-1.237198),
+                            new LatLng(54.572269,-1.237228),
+                            new LatLng(54.572279,-1.237259),
+                            new LatLng(54.572285,-1.237279),
+                            new LatLng(54.572287,-1.237308),
+                            new LatLng(54.572293,-1.237339),
+                            new LatLng(54.572294,-1.237381))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.570479,-1.235537),
+                    new LatLng(54.570336,-1.235568),
+                    new LatLng(54.570338,-1.235542),
+                    new LatLng(54.570342,-1.235514),
+                    new LatLng(54.570348,-1.235481),
+                    new LatLng(54.570356,-1.23545),
+                    new LatLng(54.570361,-1.235429),
+                    new LatLng(54.57037,-1.235404),
+                    new LatLng(54.57038,-1.235383),
+                    new LatLng(54.570389,-1.235361),
+                    new LatLng(54.570401,-1.235353),
+                    new LatLng(54.570418,-1.235352),
+                    new LatLng(54.570433,-1.235359),
+                    new LatLng(54.570447,-1.235374),
+                    new LatLng(54.570455,-1.235397),
+                    new LatLng(54.570473,-1.235483))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeColor(COLOR_PATH_WHITE)
+                .strokeWidth(2));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.570492,-1.235653),
+                    new LatLng(54.570494,-1.235678),
+                    new LatLng(54.570494,-1.235694),
+                    new LatLng(54.570495,-1.235729),
+                    new LatLng(54.570495,-1.235765),
+                    new LatLng(54.570496,-1.235791),
+                    new LatLng(54.570496,-1.235808),
+                    new LatLng(54.570494,-1.235826),
+                    new LatLng(54.570494,-1.235855),
+                    new LatLng(54.570492,-1.235882),
+                    new LatLng( 54.570492,-1.235898),
+                    new LatLng(54.570489,-1.235924),
+                    new LatLng(54.570488,-1.23594),
+                    new LatLng(54.570487,-1.235957),
+                    new LatLng(54.570485,-1.23597),
+                    new LatLng(54.570484,-1.235982),
+                    new LatLng(54.570482,-1.236003),
+                    new LatLng(54.570473,-1.235999),
+                    new LatLng(54.570465,-1.235991),
+                    new LatLng(54.570459,-1.235983),
+                    new LatLng(54.570452,-1.235977),
+                    new LatLng(54.570447,-1.235972),
+                    new LatLng(54.570441,-1.235967),
+                    new LatLng(54.570431,-1.235954),
+                    new LatLng(54.570423,-1.235945),
+                    new LatLng(54.570414,-1.23593),
+                    new LatLng(54.570406,-1.235918),
+                    new LatLng(54.570398,-1.235902),
+                    new LatLng(54.570392,-1.235892),
+                    new LatLng(54.570386,-1.235879),
+                    new LatLng(54.570378,-1.235862),
+                    new LatLng(54.570371,-1.235845),
+                    new LatLng(54.570365,-1.235828),
+                    new LatLng(54.570359,-1.235809),
+                    new LatLng(54.570353,-1.235788),
+                    new LatLng(54.570351,-1.235774),
+                    new LatLng(54.570347,-1.235758),
+                    new LatLng(54.570344,-1.235737),
+                    new LatLng(54.570341,-1.235725),
+                    new LatLng(54.570338,-1.235702),
+                    new LatLng(54.570335,-1.23568))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeColor(COLOR_PATH_WHITE)
+                .strokeWidth(2));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.572325,-1.237231),
+                        new LatLng(54.572295,-1.237235),
+                        new LatLng(54.572285,-1.237208),
+                        new LatLng(54.572275,-1.237185),
+                        new LatLng(54.572265,-1.237164),
+                        new LatLng(54.572257,-1.237153),
+                        new LatLng(54.57225,-1.237141),
+                        new LatLng(54.572238,-1.237126),
+                        new LatLng(54.572226,-1.237112),
+                        new LatLng(54.572212,-1.2371),
+                        new LatLng(54.572198,-1.23709),
+                        new LatLng(54.572187,-1.237083),
+                        new LatLng(54.572175,-1.237077),
+                        new LatLng(54.572162,-1.237071),
+                        new LatLng(54.57215,-1.237063),
+                        new LatLng(54.572138,-1.23706),
+                        new LatLng(54.572124,-1.237046),
+                        new LatLng(54.57211,-1.237028),
+                        new LatLng(54.572117,-1.236967),
+                        new LatLng(54.572133,-1.236928),
+                        new LatLng(54.572157,-1.236826),
+                        new LatLng(54.57217,-1.236767),
+                        new LatLng(54.572182,-1.236719),
+                        new LatLng(54.572198,-1.236663),
+                        new LatLng(54.572216,-1.23661),
+                        new LatLng(54.572232,-1.236632),
+                        new LatLng(54.572255,-1.236652),
+                        new LatLng(54.572272,-1.236666),
+                        new LatLng(54.572288,-1.236679))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
+
         mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.569043,-1.236782),
                         new LatLng(54.568938,-1.235172),
@@ -1031,11 +1279,21 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-
+        if (id == R.id.action_campus_map){
+            //Intent intent = new Intent(this, MainActivity.class);//opens a new screen when the shopping list is clicked
+            //startActivity(intent);
+        } else if (id == R.id.action_current_Location) {
+            Intent intent = new Intent(this, CurrentLocation.class);//opens a new screen when the shopping list is clicked
+            startActivity(intent);
+        } else if (id == R.id.action_place_search) {
+            //Intent intent = new Intent(this, NeededGames.class);//opens a new screen when the shopping list is clicked
+            //intent.putExtra("wherestatement", wherestatement);
+            //startActivity(intent);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

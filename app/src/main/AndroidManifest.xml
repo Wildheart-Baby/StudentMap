@@ -37,10 +37,12 @@
 
         <activity
             android:name=".CurrentLocation"
-            android:label="@string/title_activity_current_location" />
+            android:label="@string/title_activity_current_location"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".CampusMap"
             android:label="@string/title_activity_campus_map"
+            android:screenOrientation="portrait"
             android:theme="@style/MapLoadTheme"><!--android:theme="@style/Theme.AppCompat.NoActionBar"-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -20,4 +20,9 @@
     <string name="action_example">Example action</string>
     <string name="MapLoading">Map Loading</string>
 
+    <string name="action_campus_map">Campus map</string>
+    <string name="action_current_location">Current location</string>
+    <string name="action_place_search">Place search</string>
+    <string name="DistanceOverlay">calculating distance...</string>
+
 </resources>
