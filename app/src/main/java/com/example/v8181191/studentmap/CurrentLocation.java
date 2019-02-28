@@ -95,7 +95,7 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
             return;
         }
 
-        mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(false);
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
     }
