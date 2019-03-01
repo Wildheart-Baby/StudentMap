@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Student Map</string>
     <string name="action_settings">Settings</string>
+    <string name="action_campus_key">Campus Key</string>
     <string name="title_activity_current_location">Map</string>
     <string name="title_activity_campus_map">Student Map</string>
     <string name="title_activity_maps">Student Map</string>
@@ -24,5 +25,5 @@
     <string name="action_current_location">Current location</string>
     <string name="action_place_search">Place search</string>
     <string name="DistanceOverlay">calculating distance...</string>
-
+    <string name="CampusKey">1 The Curve (T)\n2 Library (L)\n3 Students’ Union\n4 Greig (G)\n5 Europa (IT/OL)\n6 Victoria (V)\n7 Mercuria (MC)\n8 Olympia (OLY)\n9 Centuria (H)\nCenturia South (HS)\n10 Business School\n11 Clarendon (CL)\n12 Waterhouse (W)\n13 Student Life\n14 Middlesbrough Tower (M)\n15 Constantine (C)\n16 Stephenson (IC)\n17 Cook (CK)\n18 Foster (F)\n19 Phoenix (P)\n20 Education House\n21 Orion (CE)\n22 Athena (A)\n23 University House (UH)\n24 Aurora (AH)\nP Parking</string>
 </resources>

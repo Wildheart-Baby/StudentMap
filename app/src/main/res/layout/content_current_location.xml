@@ -15,8 +15,8 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/rlWeather"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         map:mapType="satellite"
         map:uiCompass="true"
         map:uiRotateGestures="true"
@@ -31,24 +31,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
+        android:background="@color/holo_opaque"
         android:visibility="visible">
 
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/txtWeather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="false"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/imgWeather"
             android:gravity="center_vertical"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imgWeather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            map:srcCompat="@drawable/weather_one_d" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            map:srcCompat="@drawable/weather_placeholder" />
     </RelativeLayout>
 
 

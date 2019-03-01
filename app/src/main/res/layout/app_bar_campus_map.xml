@@ -32,8 +32,12 @@
         android:background="@color/holo_opaque"
         android:gravity="center_vertical|center_horizontal|center"
         android:paddingBottom="5dp"
+        android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="50"
         android:text="@string/DistanceOverlay"
-        android:textColor="@color/places_ui_default_text"
+        android:textColor="@color/cardview_light_background"
         android:textSize="18sp" />
 
     <android.support.design.widget.FloatingActionButton
