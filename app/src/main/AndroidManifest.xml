@@ -21,9 +21,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -44,12 +42,20 @@
             android:name=".CampusMap"
             android:label="@string/title_activity_campus_map"
             android:screenOrientation="portrait"
-            android:theme="@style/MapLoadTheme"><!--android:theme="@style/Theme.AppCompat.NoActionBar"-->
+            android:theme="@style/MapLoadTheme"> <!-- android:theme="@style/Theme.AppCompat.NoActionBar" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PlacesSearch"
+            android:label="@string/title_activity_current_location"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
+
+
     </application>
 
 </manifest>

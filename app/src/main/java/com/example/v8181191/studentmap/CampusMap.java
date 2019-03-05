@@ -1396,14 +1396,14 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
 
 
-        Resources.Theme theme = super.getTheme();
-        theme.applyStyle(R.style.CampusPreload, true);
+        Resources.Theme theme = super.getTheme();                                     //gets the current theme used by the activity
+        theme.applyStyle(R.style.CampusPreload, true);                          //set the theme of the activity to the campus preload theme
         //navigationView.setBackgroundResource(R.drawable.drawer_background);
-        navigationView.setBackgroundColor(R.color.cardview_light_background);
+        navigationView.setBackgroundColor(R.color.cardview_light_background);           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
 
     }
 
-    public void resetCamera(){
+    public void resetCamera(){                                                      //resets the camera to the initial gps coordinates and zppm level
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(campus, 16.5f));
     }
 
@@ -1419,9 +1419,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
             Intent intent = new Intent(this, CurrentLocation.class);//opens a new screen when the shopping list is clicked
             startActivity(intent);
         } else if (id == R.id.action_place_search) {
-            //Intent intent = new Intent(this, NeededGames.class);//opens a new screen when the shopping list is clicked
-            //intent.putExtra("wherestatement", wherestatement);
-            //startActivity(intent);
+            Intent intent = new Intent(this, PlacesSearch.class);//opens a new screen when the shopping list is clicked
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
