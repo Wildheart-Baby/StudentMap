@@ -326,11 +326,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
             d = String.format("%.2f", distance);
             d = d + " miles from campus";
             distance_overlay.setText(d);
-        } else if (campusCentre < 200.000){
+        } else if (campusCentre < 250.000){
             distance_overlay.setVisibility(View.INVISIBLE);
             d = String.format("%.0f", campusCentre);
             distance_overlay.setText("");
-            distance_overlay.setShadowLayer(0.01f, -2, 2,   getResources().getColor(R.color.places_text_black_alpha_26));
+            //distance_overlay.setShadowLayer(1.0f, -2, 2,   getResources().getColor(R.color.places_text_black_alpha_26));
         }
     }
 
@@ -1399,7 +1399,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         Resources.Theme theme = super.getTheme();                                     //gets the current theme used by the activity
         theme.applyStyle(R.style.CampusPreload, true);                          //set the theme of the activity to the campus preload theme
         //navigationView.setBackgroundResource(R.drawable.drawer_background);
-        navigationView.setBackgroundColor(R.color.cardview_light_background);           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
+        navigationView.setBackgroundColor(getResources().getColor(R.color.CampusMapGray));           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
 
     }
 

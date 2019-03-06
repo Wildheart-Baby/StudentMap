@@ -1,23 +1,35 @@
 package com.example.v8181191.studentmap;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
+import static com.android.volley.VolleyLog.TAG;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SearchBoxFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link SearchBoxFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchBoxFragment extends Fragment {
+public class SearchBoxFragment extends Fragment /*implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks*/{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,7 +39,13 @@ public class SearchBoxFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private SearchListener mListener;
+    String url, searchTerm;
+    TextView searchBox;
+    Button search;
+    GoogleApiClient mGoogleApiClient;
+    private android.location.Location mCurrentLocation;
+    Double locLat, locLong;
 
     public SearchBoxFragment() {
         // Required empty public constructor
@@ -59,27 +77,42 @@ public class SearchBoxFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
 
         }
+        /*mGoogleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_box, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_search_box, container, false);
+
+        searchBox = view.findViewById(R.id.etSearchTerm);
+        search = view.findViewById(R.id.btnSearch);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSearchTerm();
+            }
+        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    /*// TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof SearchListener) {
+            mListener = (SearchListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -92,6 +125,41 @@ public class SearchBoxFragment extends Fragment {
         mListener = null;
     }
 
+    /*@Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        locLat = this.mCurrentLocation.getLatitude();
+        locLong = this.mCurrentLocation.getLongitude();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        CharSequence text = "onConnectionSuspended executed";
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
+        //toast.show();
+        Log.i(TAG, "GoogleApiClient connection has been suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        CharSequence text = "onConnectionFailed";
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
+        //toast.show();
+        Log.i(TAG, "GoogleApiClinet connection has failed");
+    }*/
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -102,8 +170,19 @@ public class SearchBoxFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+
+    public interface SearchListener {
+        void onRecieveSearch(final String url);
     }
+
+    public void getSearchTerm(){
+        searchTerm = searchBox.getText().toString();
+        mGoogleApiClient.connect();
+        url="https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ searchTerm +"&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+        Log.i("StudMapSBF", url);
+        mListener.onRecieveSearch(url);
+        mGoogleApiClient.disconnect();
+    }
+
 }

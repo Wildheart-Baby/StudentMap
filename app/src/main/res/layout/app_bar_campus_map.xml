@@ -37,7 +37,6 @@
         android:shadowDy="2"
         android:shadowRadius="50"
         android:text="@string/DistanceOverlay"
-        android:textColor="@color/cardview_light_background"
         android:textSize="18sp" />
 
     <android.support.design.widget.FloatingActionButton
@@ -46,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/place_autocomplete_prediction_primary_text_highlight"
         app:srcCompat="@drawable/location_icon" />
 
 </android.support.design.widget.CoordinatorLayout>

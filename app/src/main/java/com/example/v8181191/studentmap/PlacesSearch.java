@@ -1,39 +1,16 @@
 package com.example.v8181191.studentmap;
 
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 
-public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.OnFragmentInteractionListener, SearchResultsFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
+
+public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener, SearchResultsFragment.OnFragmentInteractionListener/*, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks*/{
 
     private final String TAG = "StudentMapApp";
     String url, placePhoto, placeOpenTimes, placeType, kept;
@@ -50,7 +27,7 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places_search);
         //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        /*mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
@@ -58,11 +35,11 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         mGoogleApiClient.connect();
 
         json = findViewById(R.id.txtJson);
-        results = findViewById(R.id.lvResults);
+        results = findViewById(R.id.lvResults);*/
 
     }
 
-    public void getPlaces(String url){
+   /* public void getPlaces(String url){
 
         placeList = new ArrayList<PlaceItems>();//sets up an array list called placeList
         placeList.clear();//clear the placeList array
@@ -86,7 +63,7 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
                             PlaceItems placeListItems = new PlaceItems();
                             //json.setText(""+places.length());
                             try {
-                                kept = places.getJSONObject(i).getString("formatted_address");
+                                kept = places.getJSONObject(i).getString("vicinity");
                                 kept = kept.substring(0, kept.indexOf(","));
                             } catch(org.json.JSONException exception){
                                 kept = "none";
@@ -161,7 +138,10 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         PlacesAdapter plce = new PlacesAdapter(this, placeList);
         results.setAdapter(plce);
 
+    }*/
 
+    @Override
+    public void onRecieveSearch(String url) {
 
     }
 
@@ -170,7 +150,7 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
 
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
@@ -199,9 +179,10 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
 
         locLat = this.mCurrentLocation.getLatitude();
         locLong = this.mCurrentLocation.getLongitude();
-        url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+        //url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
         //json.setText(url);
         //url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + locLat + "," + locLong + "&radius=1500&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+        url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?openNow=true&keyword=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
         getPlaces(url);
 
     }
@@ -224,5 +205,5 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         Toast toast = Toast.makeText(this, text, duration);
         //toast.show();
         Log.i(TAG, "GoogleApiClinet connection has failed");
-    }
+    }*/
 }

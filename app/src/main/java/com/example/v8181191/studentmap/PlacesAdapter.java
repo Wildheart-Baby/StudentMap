@@ -1,7 +1,11 @@
 package com.example.v8181191.studentmap;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,10 +83,8 @@ public class PlacesAdapter extends BaseAdapter{
         holder.theratings.setText("("+placeListItems.getNumberRatings()+")");
         photo = placeListItems.getPlacePhoto();
 
-        photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&photoreference=" + photo + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+        photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + photo + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
         Glide.with(context).load(photo).into(holder.placephoto);
-
-
 
         if (placeListItems.getOpenTimes() == "true"){
             holder.opentimes.setText("Open Now");
@@ -122,6 +124,11 @@ public class PlacesAdapter extends BaseAdapter{
         } else if (placeListItems.getRating() >=0.5 ){
             int coverid=context.getResources().getIdentifier("stars_half", "drawable", context.getPackageName());
             holder.stars.setImageResource(coverid);
+        }
+        if (position % 2 == 0) {
+            convertView.setBackgroundColor(Color.parseColor("#CAC9C5"));
+        } else {
+            convertView.setBackgroundColor(Color.parseColor("#C0C0BB"));
         }
 
 

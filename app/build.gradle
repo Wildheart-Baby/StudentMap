@@ -6,6 +6,7 @@ android {
         applicationId "com.example.v8181191.studentmap"
         minSdkVersion 26
         targetSdkVersion 26
+        multiDexEnabled = false
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,8 +24,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.google.android.libraries.places:places-compat:1.0.0'
-    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-places:16.0.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
