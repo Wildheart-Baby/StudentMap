@@ -1,5 +1,7 @@
 package com.example.v8181191.studentmap;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Wildheart on 28/02/2019.
  */
@@ -8,6 +10,7 @@ public class PlaceItems {
     private Double lat, lng, rating;
     private String name, description, photo, open, place_id, place_type, number_ratings, address;
     private Long sunrise, sunset;
+    private Bitmap  placePhoto;
 
     public String getPlaceName() {return name;}
     public void setPlaceName(String name) {this.name = name;}
@@ -42,5 +45,7 @@ public class PlaceItems {
     public Double getRating() {return rating;}
     public void setRating(Double rating) {this.rating = rating;}
 
+    public Bitmap getPhoto() {return placePhoto;}
+    public void setPhoto(Bitmap placePhoto) {this.placePhoto = placePhoto;}
 
 }

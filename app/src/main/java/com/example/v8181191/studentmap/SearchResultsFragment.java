@@ -2,6 +2,7 @@ package com.example.v8181191.studentmap;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
@@ -85,7 +88,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         if (getArguments() != null) {
 
         }
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
@@ -112,7 +115,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         }
     }
 
-    @Override
+    /*@Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -122,7 +125,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                     + " must implement OnFragmentInteractionListener");
         }
         //mGoogleApiClient.connect();
-    }
+    }*/
 
     @Override
     public void onDetach() {
@@ -153,7 +156,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         placeList = new ArrayList<PlaceItems>();//sets up an array list called placeList
         placeList.clear();//clear the placeList array
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext()); //sets up a reference to the volley library queue
+        RequestQueue queue = Volley.newRequestQueue(getActivity()); //sets up a reference to the volley library queue
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -169,7 +172,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
 
                             for (int i = 0; i < places.length(); i++){
 
-                                PlaceItems placeListItems = new PlaceItems();
+                                final PlaceItems placeListItems = new PlaceItems();
                                 //json.setText(""+places.length());
                                 try {
                                     kept = places.getJSONObject(i).getString("vicinity");
@@ -191,10 +194,12 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                     JSONArray photoItemArray = places.getJSONObject(i).getJSONArray("photos");
                                     for (int j=0; j < photoItemArray.length(); j++){
                                         placePhoto = photoItemArray.getJSONObject(j).getString("photo_reference");
+                                        //placePhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + placePhoto + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+
                                     }
 
                                 } catch(org.json.JSONException exception){
-                                    placePhoto = "none";
+                                    //placePhoto = "none";
                                 }
 
                                 String pn = placePhoto;
@@ -208,9 +213,6 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
 
                                 Log.i("StudMap", ""+placeOpenTimes);
                                 placeListItems.setOpenTimes(placeOpenTimes);
-
-                                //placeListItems.setOpenTimes(places.getJSONObject(i).getJSONObject("opening_hours").getString("open_now"));
-                                //placePhoto = places.getJSONObject(i).getJSONObject("photos").getJSONObject("0").getString("photo_reference");
 
                                 try {
                                     placeListItems.setRating(places.getJSONObject(i).getDouble("rating"));
@@ -231,7 +233,8 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                     placeListItems.setNumberRatings("0");
                                 }
                                 placeList.add(placeListItems);
-
+                                PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
+                                results.setAdapter(plce);
                             }
 
                         } catch (JSONException e) {
@@ -246,16 +249,15 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
             }
         });
         queue.add(stringRequest);
-        PlacesAdapter plce = new PlacesAdapter(getActivity().getApplicationContext(), placeList);
-        results.setAdapter(plce);
-
+        //PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
+        //results.setAdapter(plce);
     }
 
     @Override
     public void onConnected(Bundle bundle) {
 
-        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
@@ -281,7 +283,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         CharSequence text = "onConnectionSuspended executed";
         int duration = Toast.LENGTH_LONG;
 
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
+        Toast toast = Toast.makeText(getActivity(), text, duration);
         //toast.show();
         Log.i(TAG, "GoogleApiClient connection has been suspended");
     }
@@ -291,9 +293,18 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         CharSequence text = "onConnectionFailed";
         int duration = Toast.LENGTH_LONG;
 
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
+        Toast toast = Toast.makeText(getActivity(), text, duration);
         //toast.show();
         Log.i(TAG, "GoogleApiClinet connection has failed");
+    }
+
+    public void searchPlaces(final String place){
+        Log.i("StudMapSP", "running function");
+        locLat = this.mCurrentLocation.getLatitude();
+        locLong = this.mCurrentLocation.getLongitude();
+        url="https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ place +"&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+        Log.i("StudMapSRF", url);
+        getPlaces(url);
     }
 
 }

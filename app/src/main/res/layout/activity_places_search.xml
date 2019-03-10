@@ -15,13 +15,11 @@
         android:layout_height="wrap_content" />
 
     <fragment
-        android:id="@+id/frgSearchResults"
+        android:id="@+id/fragment"
         android:name="com.example.v8181191.studentmap.SearchResultsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="false"
-        android:layout_below="@+id/txtJson"
-        android:layout_marginTop="5dp" />
+        android:layout_below="@+id/txtJson" />
 
     <TextView
         android:id="@+id/txtJson"

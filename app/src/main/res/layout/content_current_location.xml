@@ -43,7 +43,6 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/imgWeather"
             android:gravity="center_vertical"
-            android:text="TextView"
             android:textAllCaps="false"
             android:textStyle="bold" />
 

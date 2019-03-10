@@ -3,14 +3,17 @@ package com.example.v8181191.studentmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.v8181191.studentmap.dummy.DummyContent;
 import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 
 
 
-public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener, SearchResultsFragment.OnFragmentInteractionListener/*, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks*/{
+public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener/*, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks*/{
 
     private final String TAG = "StudentMapApp";
     String url, placePhoto, placeOpenTimes, placeType, kept;
@@ -142,13 +145,14 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
 
     @Override
     public void onRecieveSearch(String url) {
-
+        SearchResultsFragment sFragment = (SearchResultsFragment)getFragmentManager().findFragmentById(R.id.frgSearchResults);
+        Log.i("StudMapORS", url);
+        if(sFragment !=null){
+            sFragment.searchPlaces(url);
+        }
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 
     /*@Override
     protected void onStart() {

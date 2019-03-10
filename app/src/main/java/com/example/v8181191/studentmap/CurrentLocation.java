@@ -100,21 +100,8 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -127,7 +114,6 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
         }
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
         mMap.setMyLocationEnabled(false);
-
     }
 
     @Override
@@ -336,9 +322,8 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
             //Intent intent = new Intent(this, CurrentLocation.class);//opens a new screen when the shopping list is clicked
             //startActivity(intent);
         } else if (id == R.id.action_place_search) {
-            //Intent intent = new Intent(this, NeededGames.class);//opens a new screen when the shopping list is clicked
-            //intent.putExtra("wherestatement", wherestatement);
-            //startActivity(intent);
+            Intent intent = new Intent(this, PlacesSearch.class);//opens a new screen when the shopping list is clicked
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

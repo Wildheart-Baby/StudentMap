@@ -178,11 +178,11 @@ public class SearchBoxFragment extends Fragment /*implements GoogleApiClient.OnC
 
     public void getSearchTerm(){
         searchTerm = searchBox.getText().toString();
-        mGoogleApiClient.connect();
-        url="https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ searchTerm +"&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
-        Log.i("StudMapSBF", url);
-        mListener.onRecieveSearch(url);
-        mGoogleApiClient.disconnect();
+        //mGoogleApiClient.connect();
+        //url="https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ searchTerm +"&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+        Log.i("StudMapSBF", searchTerm);
+        mListener.onRecieveSearch(searchTerm);
+        //mGoogleApiClient.disconnect();
     }
 
 }

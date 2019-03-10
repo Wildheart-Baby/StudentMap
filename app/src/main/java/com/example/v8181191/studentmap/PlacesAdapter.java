@@ -85,6 +85,7 @@ public class PlacesAdapter extends BaseAdapter{
 
         photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + photo + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
         Glide.with(context).load(photo).into(holder.placephoto);
+        //Glide.with(context).load(placeListItems.getPhoto()).into(holder.placephoto);
 
         if (placeListItems.getOpenTimes() == "true"){
             holder.opentimes.setText("Open Now");
@@ -132,7 +133,7 @@ public class PlacesAdapter extends BaseAdapter{
         }
 
 
-        Log.i("StudMap", "done");
+        Log.i("StudMap", position + "done");
         return convertView;
     }
 }
