@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,6 +51,8 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private LocationListener lListener;
+
     private final String TAG = "StudentMapApp";
     String url, placePhoto, placeOpenTimes, placeType, kept;
     GoogleApiClient mGoogleApiClient;
@@ -58,8 +61,9 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     ArrayList<PlaceItems> placeList;
     TextView json;
     ListView results;
+    String placeid;
 
-    private OnFragmentInteractionListener mListener;
+
 
     public SearchResultsFragment() {
         // Required empty public constructor
@@ -94,6 +98,8 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                 .addApi(LocationServices.API).build();
 
         mGoogleApiClient.connect();
+
+
     }
 
     @Override
@@ -105,32 +111,36 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         json = view.findViewById(R.id.txtJson);
         results = view.findViewById(R.id.lvResults);
 
+        results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {//on clicking a shopping list
+                PlaceItems placeListItems = (PlaceItems) arg0.getItemAtPosition(arg2);//read the item at the list position that has been clicked
+                placeid = placeListItems.getPlaceId();//get the name of the shopping list table
+                //sql = wherestatement + licensed;
+
+            }
+        });
+
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    /*@Override
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof LocationListener) {
+            lListener = (LocationListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
         //mGoogleApiClient.connect();
-    }*/
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         mGoogleApiClient.disconnect();
     }
 
@@ -146,10 +156,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 
     public void getPlaces(String url){
 
@@ -188,8 +195,8 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                 placeListItems.setLng(places.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
 
                                 placeListItems.setPlaceName(places.getJSONObject(i).getString("name"));
-                                placeListItems.setPlaceId(places.getJSONObject(i).getString("id"));
-
+                                placeListItems.setPlaceId(places.getJSONObject(i).getString("place_id"));
+                                Log.i("StudMapPlaceId", places.getJSONObject(i).getString("place_id"));
                                 try {
                                     JSONArray photoItemArray = places.getJSONObject(i).getJSONArray("photos");
                                     for (int j=0; j < photoItemArray.length(); j++){
@@ -298,13 +305,17 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         Log.i(TAG, "GoogleApiClinet connection has failed");
     }
 
-    public void searchPlaces(final String place){
+    public void searchPlaces(String place){
         Log.i("StudMapSP", "running function");
         locLat = this.mCurrentLocation.getLatitude();
         locLong = this.mCurrentLocation.getLongitude();
         url="https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ place +"&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
         Log.i("StudMapSRF", url);
         getPlaces(url);
+    }
+
+    public interface LocationListener {
+        void onReceiveLocationId(String search);
     }
 
 }

@@ -27,6 +27,7 @@ public class PlacesAdapter extends BaseAdapter{
     static class ViewHolder {
         TextView placeName, rating, theratings, opentimes, address, placetype;
         ImageView stars, placephoto;
+
     }
 
     ArrayList<PlaceItems> placeList;
@@ -73,6 +74,7 @@ public class PlacesAdapter extends BaseAdapter{
             holder.placephoto = convertView.findViewById(R.id.imgPhoto);
 
             convertView.setTag(holder);
+
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.placeName.setText(placeListItems.getPlaceName());
@@ -133,7 +135,10 @@ public class PlacesAdapter extends BaseAdapter{
         }
 
 
+
         Log.i("StudMap", position + "done");
         return convertView;
     }
+
+
 }

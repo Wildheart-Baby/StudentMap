@@ -19,7 +19,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:focusableInTouchMode="false"
-            android:focusedByDefault="false"
+            android:focusedByDefault="true"
             android:text="@string/Search_Box_Fragment" />
 
         <EditText
