@@ -1,6 +1,7 @@
 package com.example.v8181191.studentmap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -116,7 +117,9 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {//on clicking a shopping list
                 PlaceItems placeListItems = (PlaceItems) arg0.getItemAtPosition(arg2);//read the item at the list position that has been clicked
                 placeid = placeListItems.getPlaceId();//get the name of the shopping list table
-                //sql = wherestatement + licensed;
+                Log.i("StudMapSRFOnClick", placeid);
+
+                lListener.onReceiveLocationId(placeid);
 
             }
         });
@@ -317,5 +320,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     public interface LocationListener {
         void onReceiveLocationId(String search);
     }
+
+
 
 }

@@ -1,5 +1,7 @@
 package com.example.v8181191.studentmap;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -28,6 +42,9 @@ public class LocationFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    String url, ot;
+    Double locLat, locLong;
+    TextView name, address, opentimes, phonenumber;
 
     private OnFragmentInteractionListener mListener;
 
@@ -39,16 +56,13 @@ public class LocationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment LocationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LocationFragment newInstance(String param1, String param2) {
+    public static LocationFragment newInstance() {
         LocationFragment fragment = new LocationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,16 +71,32 @@ public class LocationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getString(ARG_PLACE);
         }
+        //createLocationFragment();
+        loadPlaces(mParam1);
+    }
+
+    private void createLocationFragment (){
+        FragmentManager fm = getFragmentManager();
+
+        FragmentTransaction ft = fm.beginTransaction();
+
+        ft.add(R.id.fragment_container, LocationFragment.newInstance());
+
+        ft.commit();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location, container, false);
+        View view = inflater.inflate(R.layout.fragment_location, container, false);
+        name = view.findViewById(R.id.txtName);
+        address = view.findViewById(R.id.txtAddress);
+        opentimes = view.findViewById(R.id.txtOpenTimes);
+        phonenumber = view.findViewById(R.id.txtPhoneNumber);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -110,7 +140,44 @@ public class LocationFragment extends Fragment {
 
     public void loadPlaces(String place){
         Log.i("StudMapLF", "running function");
+        url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + mParam1 +"&fields=name,formatted_address,geometry,photos,opening_hours,formatted_phone_number&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
 
+        RequestQueue queue = Volley.newRequestQueue(getActivity()); //sets up a reference to the volley library queue
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        try {
+
+                            JSONObject placeData = new JSONObject(response);
+                            name.setText(placeData.getJSONObject("result").getString("name"));
+                            locLat = placeData.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                            locLong = placeData.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+                            address.setText(placeData.getJSONObject("result").getString("formatted_address"));
+                            phonenumber.setText(placeData.getJSONObject("result").getString("formatted_phone_number"));//
+
+                            JSONArray openTimes = placeData.getJSONObject("result").getJSONObject("opening_hours").getJSONArray("weekday_text");
+                            ot = openTimes.getString(0) + "\n" + openTimes.getString(1) + "\n" + openTimes.getString(2) + "\n" +
+                                    openTimes.getString(3) + "\n" +openTimes.getString(4) + "\n" +openTimes.getString(5) + "\n" +
+                                    openTimes.getString(6);
+
+                            opentimes.setText(ot);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //json.setText("That didn't work!");
+            }
+        });
+        queue.add(stringRequest);
     }
 
 }
