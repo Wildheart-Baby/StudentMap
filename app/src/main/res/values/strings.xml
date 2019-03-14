@@ -32,5 +32,6 @@
     <string name="Location_Address">Address</string>
     <string name="Location_Phone_number">Phone number</string>
     <string name="Location_Open_Times">Opening times</string>
+    <string name="NavHeaderTitle">Student Map</string>
 
 </resources>

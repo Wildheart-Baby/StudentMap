@@ -36,11 +36,14 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
     }
 
     @Override
-    public void onReceiveLocationId(String location) {
+    public void onReceiveLocationId(String location, Double userLat, Double userLng) {
 
         LocationFragment LocFragment = new LocationFragment();
         Bundle args = new Bundle();
         args.putString(LocationFragment.ARG_PLACE, location);
+        args.putDouble("ARG_USERLAT", userLat);
+        args.putDouble("ARG_USERLNG", userLng);
+
         LocFragment.setArguments(args);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

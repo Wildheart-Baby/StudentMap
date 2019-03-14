@@ -119,8 +119,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                 placeid = placeListItems.getPlaceId();//get the name of the shopping list table
                 Log.i("StudMapSRFOnClick", placeid);
 
-                lListener.onReceiveLocationId(placeid);
-
+                lListener.onReceiveLocationId(placeid, locLat, locLong);
             }
         });
 
@@ -318,7 +317,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     }
 
     public interface LocationListener {
-        void onReceiveLocationId(String search);
+        void onReceiveLocationId(String search, Double userLat, Double userLng);
     }
 
 

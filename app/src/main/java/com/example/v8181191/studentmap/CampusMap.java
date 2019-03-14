@@ -309,7 +309,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     public void distance_calc(){        //this calculates the distance from the centre of campus and the user's current location
-        double dLat = Math.toRadians(54.570792 - locLat);
+        /*double dLat = Math.toRadians(54.570792 - locLat);
         double dLon = Math.toRadians(-1.234907 - locLong);
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                 Math.cos(Math.toRadians(locLat)) * Math.cos(Math.toRadians(54.570792)) *
@@ -319,14 +319,18 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         //6378.1 is gravity of earth
         distance =  c2*6378.1;
         distance = distance * 0.621371;
-        campusCentre = distance * 1609.34;
+        campusCentre = distance * 1609.34;*/
 
-        if (campusCentre > 200.001){
+        LocationFunctions lf = new LocationFunctions();
+
+        campusCentre =  lf.TotalDistance(54.570792, locLat, -1.234907,locLong);
+        Log.i("CM Distance", ""+campusCentre);
+        if (campusCentre > 0.14291537){
             distance_overlay.setVisibility(View.VISIBLE);
-            d = String.format("%.2f", distance);
+            d = String.format("%.2f", campusCentre);
             d = d + " miles from campus";
             distance_overlay.setText(d);
-        } else if (campusCentre < 250.000){
+        } else if (campusCentre < 0.14291537){
             distance_overlay.setVisibility(View.INVISIBLE);
             d = String.format("%.0f", campusCentre);
             distance_overlay.setText("");
@@ -1399,7 +1403,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         Resources.Theme theme = super.getTheme();                                     //gets the current theme used by the activity
         theme.applyStyle(R.style.CampusPreload, true);                          //set the theme of the activity to the campus preload theme
         //navigationView.setBackgroundResource(R.drawable.drawer_background);
-        navigationView.setBackgroundColor(getResources().getColor(R.color.CampusMapGray));           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
+        navigationView.setBackgroundColor(getResources().getColor(R.color.CampusMapKey));           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
 
     }
 
