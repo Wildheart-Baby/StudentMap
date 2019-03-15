@@ -51,7 +51,8 @@
         android:layout_below="@+id/txtAddress"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/txtPlaceType" />
+        android:layout_toEndOf="@+id/txtPlaceType"
+        android:textColor="@android:color/holo_orange_light" />
 
     <ImageView
         android:id="@+id/imgStarRating"

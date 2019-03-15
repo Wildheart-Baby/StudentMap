@@ -66,7 +66,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     TextView name, address, opentimes, phonenumber, locdistance;
     LocationFunctions lf;
     String tDistance;
-    ImageButton Phone;
+    ImageButton Phone, Maps;
 
     private OnFragmentInteractionListener mListener;
 
@@ -126,6 +126,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         phonenumber = view.findViewById(R.id.txtPhoneNumber);
         locdistance = view.findViewById(R.id.txtMiles);
         Phone = view.findViewById(R.id.imgPhone);
+        Maps = view.findViewById(R.id.imgLocation);
 
         Phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +137,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
                     Toast toast = Toast.makeText(getActivity(), "No phone number to call", Toast.LENGTH_SHORT);
                     toast.show();
                 }
+            }
+        });
+
+        Maps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMaps(locLat, locLong);
             }
         });
 
@@ -272,6 +280,15 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             catch (android.content.ActivityNotFoundException ex){
                 //Toast.makeText(getApplicationContext(),"yourActivity is not founded",Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    public void openMaps(Double lat, Double lng){
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"+");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(mapIntent);
         }
     }
 

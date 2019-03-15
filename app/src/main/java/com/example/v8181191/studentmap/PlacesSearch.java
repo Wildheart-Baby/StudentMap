@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener, SearchResultsFragment.LocationListener, LocationFragment.OnFragmentInteractionListener{
 
     private final String TAG = "StudentMapApp";
+    String searchString;
+    SearchResultsFragment fragment;
 
 
     @Override
@@ -28,8 +30,8 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
 
     @Override
     public void onReceiveSearch(String search) {
-        SearchResultsFragment fragment = (SearchResultsFragment)getFragmentManager().findFragmentById(R.id.frgSearchResults);
-        Log.i("StudMapORS", search);
+        fragment = (SearchResultsFragment)getFragmentManager().findFragmentById(R.id.frgSearchResults);
+        searchString = search;
         if(fragment !=null){
             fragment.searchPlaces(search);
         }
@@ -56,4 +58,6 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
 }

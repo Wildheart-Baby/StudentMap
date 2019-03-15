@@ -55,7 +55,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     private LocationListener lListener;
 
     private final String TAG = "StudentMapApp";
-    String url, placePhoto, placeOpenTimes, placeType, kept;
+    String url, placePhoto, placeOpenTimes, placeType, kept, searchString;
     GoogleApiClient mGoogleApiClient;
     private android.location.Location mCurrentLocation;
     Double locLat, locLong;
@@ -63,6 +63,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     TextView json;
     ListView results;
     String placeid;
+    Boolean firstTime = true;
 
 
 
@@ -109,15 +110,20 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_results, container, false);
 
+        if (savedInstanceState != null) {
+            // Restore last state
+            getPlaces(savedInstanceState.getString("search_key"));
+            firstTime = savedInstanceState.getBoolean("first_time");
+        }
+
         json = view.findViewById(R.id.txtJson);
         results = view.findViewById(R.id.lvResults);
-
+        results.requestFocus();
         results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {//on clicking a shopping list
                 PlaceItems placeListItems = (PlaceItems) arg0.getItemAtPosition(arg2);//read the item at the list position that has been clicked
                 placeid = placeListItems.getPlaceId();//get the name of the shopping list table
-                Log.i("StudMapSRFOnClick", placeid);
 
                 lListener.onReceiveLocationId(placeid, locLat, locLong);
             }
@@ -126,7 +132,13 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         return view;
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("search_key", searchString);
+        outState.putBoolean("first_time", false);
+        //firstTime = false;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -148,6 +160,8 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
 
 
 
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -161,7 +175,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
 
 
     public void getPlaces(String url){
-
+        searchString = url;
         placeList = new ArrayList<PlaceItems>();//sets up an array list called placeList
         placeList.clear();//clear the placeList array
 
@@ -189,16 +203,19 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                         kept = kept.substring(0, kept.indexOf(","));
                                     }
                                 } catch(org.json.JSONException exception){
-                                    kept = "none";
+                                    //kept = "none";
+                                    kept = places.getJSONObject(i).getString("formatted_address");
+                                    if(kept.contains(","))  {
+                                        kept = kept.substring(0, kept.indexOf(","));
+                                    }
                                 }
-                                Log.i("StudMap", i + " " + kept);
+
                                 placeListItems.setPlaceAddress(kept);
                                 placeListItems.setLat(places.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"));
                                 placeListItems.setLng(places.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
 
                                 placeListItems.setPlaceName(places.getJSONObject(i).getString("name"));
                                 placeListItems.setPlaceId(places.getJSONObject(i).getString("place_id"));
-                                Log.i("StudMapPlaceId", places.getJSONObject(i).getString("place_id"));
                                 try {
                                     JSONArray photoItemArray = places.getJSONObject(i).getJSONArray("photos");
                                     for (int j=0; j < photoItemArray.length(); j++){
@@ -220,7 +237,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                 } catch(org.json.JSONException exception){
                                 }
 
-                                Log.i("StudMap", ""+placeOpenTimes);
+
                                 placeListItems.setOpenTimes(placeOpenTimes);
 
                                 try {
@@ -234,7 +251,6 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                 kept = kept.substring(kept.lastIndexOf('_')+1);
                                 placeType = kept.substring(0, 1).toUpperCase() + kept.substring(1);
                                 placeListItems.setPlaceType(placeType);
-                                Log.i("StudMap", placeType);
 
                                 try {
                                     placeListItems.setNumberRatings(places.getJSONObject(i).getString("user_ratings_total"));
@@ -272,9 +288,6 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
             return;
         }
 
-
-        //LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         locLat = this.mCurrentLocation.getLatitude();
@@ -282,8 +295,11 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         //url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
         //json.setText(url);
         //url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + locLat + "," + locLong + "&radius=1500&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
-        url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?openNow=true&keyword=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
-        getPlaces(url);
+
+        if(firstTime == true){
+            url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?openNow=true&keyword=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+            getPlaces(url);
+        }
 
     }
 
