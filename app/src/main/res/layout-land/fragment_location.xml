@@ -1,0 +1,140 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frgLocation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/CampusMapGray"
+    tools:context="com.example.v8181191.studentmap.LocationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="292dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imgLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtName"
+        android:layout_marginLeft="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/lf_map2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="57dp" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txtName"
+        android:layout_below="@+id/txtName"
+        android:layout_marginTop="3dp"
+        android:textColor="@android:color/black"
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="69dp" />
+
+    <ImageButton
+        android:id="@+id/imgPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imgLocation"
+        android:layout_below="@+id/imgLocation"
+        android:layout_marginTop="3dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/lf_phone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="105dp" />
+
+    <TextView
+        android:id="@+id/txtPhoneNumber"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtAddress"
+        android:layout_alignTop="@+id/imgPhone"
+        android:textColor="@android:color/black"
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="113dp" />
+
+    <ImageView
+        android:id="@+id/imgTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imgPhone"
+        android:layout_below="@+id/imgPhone"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/lf_clock"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="165dp" />
+
+    <TextView
+        android:id="@+id/txtOpenTimes"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtAddress"
+        android:layout_alignTop="@+id/imgTime"
+        android:layout_marginTop="3dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@+id/mvLocation"
+        tools:layout_editor_absoluteY="175dp" />
+
+    <ImageView
+        android:id="@+id/imgDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imgPhone"
+        android:layout_below="@+id/txtOpenTimes"
+        android:src="@drawable/lf_distance"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="237dp" />
+
+    <TextView
+        android:id="@+id/txtMiles"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imgDistance"
+        android:layout_alignStart="@+id/txtOpenTimes"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@+id/mvLocation"
+        app:layout_constraintStart_toEndOf="@+id/imgDistance"
+        tools:layout_editor_absoluteY="244dp" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/black"
+        android:padding="2dp">
+
+        <fragment
+            android:id="@+id/mvLocation"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            map:uiRotateGestures="false"
+            map:uiScrollGestures="false"
+            map:uiTiltGestures="false"
+            map:uiZoomControls="false" />
+    </RelativeLayout>
+
+</RelativeLayout>
