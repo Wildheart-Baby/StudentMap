@@ -19,7 +19,7 @@
 
     <!-- <style name="CampusPreload" parent="Theme.AppCompat.NoActionBar" /> -->
     <style name="CampusPreload" parent="AppTheme.NoActionBar" >
-        <item name="android:statusBarColor">@android:color/transparent</item>
+      <!--  <item name="android:statusBarColor">@android:color/transparent</item>-->
     </style>
 
     <style name="Theme.CampusPreload.Light.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />

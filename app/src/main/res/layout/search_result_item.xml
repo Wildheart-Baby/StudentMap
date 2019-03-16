@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/CampusMapGray">
 
     <ImageView
         android:id="@+id/imgPhoto"
@@ -11,6 +11,7 @@
         android:layout_height="82dp"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="false"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:contentDescription="TODO"
@@ -24,7 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/imgPhoto" />
+        android:layout_toRightOf="@+id/imgPhoto"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/txtRating"
@@ -33,7 +35,8 @@
         android:layout_below="@+id/txtName"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/imgPhoto" />
+        android:layout_toEndOf="@+id/imgPhoto"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/txtPlaceType"
@@ -42,7 +45,8 @@
         android:layout_below="@+id/txtAddress"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/imgPhoto" />
+        android:layout_toEndOf="@+id/imgPhoto"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/txtPlaceTimes"
@@ -52,7 +56,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/txtPlaceType"
-        android:textColor="@android:color/holo_orange_light" />
+        android:textColor="@android:color/holo_orange_dark" />
 
     <ImageView
         android:id="@+id/imgStarRating"
@@ -71,7 +75,8 @@
         android:layout_alignBottom="@+id/txtRating"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/imgStarRating" />
+        android:layout_toEndOf="@+id/imgStarRating"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/txtAddress"
@@ -80,6 +85,16 @@
         android:layout_below="@+id/imgStarRating"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/imgPhoto" />
+        android:layout_toEndOf="@+id/imgPhoto"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/txtCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txtNumberRated"
+        android:layout_marginLeft="2dp"
+        android:layout_toEndOf="@+id/txtNumberRated"
+        android:textColor="@color/colorAccent" />
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.v8181191.studentmap;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,7 +52,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 
 public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private GoogleMap mMap;
+    private GoogleMap mMap;                                                                         //sets up the variables and elements that the activity  uses
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private final String TAG = "StudentMapApp";
@@ -84,8 +85,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     //        new LatLng(54.573043, -1.237703), new LatLng(54.567806, -1.233483));
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {                                                    //sets up the layout the activity uses along with the toolbar, the navigation drawer, map fragment and floating action button that re-centres the map
+        super.onCreate(savedInstanceState);                                                                 //it also builds the gps connection
         setContentView(R.layout.activity_campus_map);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -108,7 +109,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        mapFragment.getView().setClickable(false);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -127,13 +128,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
 
         if (mMap != null){
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    return false;
-                }
-            });
-    }
+            mapFragment.getView().setClickable(false);
+        }
 
     }
     @Override
@@ -157,77 +153,31 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         }
     }
 
-    public void ShowCampusMap(){
+    public void ShowCampusMap(){                                                                        //function to show a legend for the markers on the map
 
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(3000, 1000) {                                    //sets up a countdown timer for three seconds
 
             public void onTick(long millisUntilFinished) {
-                campusKey.setVisibility(View.VISIBLE);
+                campusKey.setVisibility(View.VISIBLE);                                                  //whilst the timer is counting down show the campus key
             }
 
             public void onFinish() {
-                campusKey.setVisibility(View.INVISIBLE);
+                campusKey.setVisibility(View.INVISIBLE);                                                //after the timer has finished hide the campus key
             }
-        }.start();
+        }.start();                                                                                      //start the timer
     }
 
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMinZoomPreference(16.20f);
+    public void onMapReady(GoogleMap googleMap) {                                                       //when the map is loaded
+        mMap = googleMap;                                                                               //sets up a reference to the map
+        mMap.setMinZoomPreference(16.30f);                                                              //sets the zoom preferences
         mMap.setMaxZoomPreference(20.0f);
-        //mMap.setMaxZoomPreference(20.0f);
-        //top left 54.573043, -1.237703
-        //bottom right 54.567806, -1.233483
-        //54.570543, -1.235653
-        // Add a marker in Sydney and move the camera
 
-        /*LatLng topLeft = new LatLng(54.573043, -1.237703);
-        LatLng bottomRight = new LatLng(54.567806, -1.233483);
+        addBuildings();                                                                                 //add the building polygons
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(topLeft);
-        builder.include(bottomRight);
-        builder.build();*/
-
-        //LatLng campus = new LatLng(54.570254, -1.235165);
-        //LatLng campus = new LatLng(54.570493, -1.235149);
-
-        LatLng home = new LatLng(54.944111, -1.536316);
-        LatLng library = new LatLng(54.569941, -1.236059);
-        LatLng curve = new LatLng(54.570381, -1.236883);
-        LatLng olympia = new LatLng(54.569268, -1.236071);
-        LatLng centuria = new LatLng(54.569390, -1.237555);
-        LatLng cook = new LatLng(54.572374, -1.232863);
-        LatLng eleven = new LatLng(54.571396, -1.236835);
-        //54.569390, -1.237555
-        addBuildings();
-
-        resetCamera();
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 16.0f));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
-
-        /*LatLngBounds campusBounds = new LatLngBounds(
-                new LatLng(54.567788, -1.232546),
-                new LatLng(54.572696, -1.237863)
-        );*/
-
-        //mMap.setLatLngBoundsForCameraTarget(campusBounds);
-
-         /*GroundOverlayOptions campusMap = new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(R.drawable.campusmap2))
-                .position(campus, 410f, 540f);
-
-
-       GroundOverlayOptions campusMap = new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(R.drawable.campusmap))
-                .positionFromBounds(campusBounds);*/
-
-        //mMap.addGroundOverlay(campusMap);
-
-        //overlay.setVisibility(View.GONE);
+        resetCamera();                                                                                  //set the map camera to the centre of campus
 
     }
 
@@ -244,24 +194,22 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
+    public void onConnected(Bundle bundle) {                                                                //when the gps is connected
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(5000);
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.RECEIVE_SMS, Manifest.permission.CALL_PHONE}, 1);
+            return;                                                                                         //ask for the persmissions the app requires
         }
 
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        //mMap.setMyLocationEnabled(true);
-
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(int i) {                                                          //if the gps connection is suspended run this function
         CharSequence text = "onConnectionSuspended executed";
         int duration = Toast.LENGTH_LONG;
 
@@ -271,7 +219,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(ConnectionResult connectionResult) {                                 //if the gps connection fails run this function
         CharSequence text = "onConnectionFailed";
         int duration = Toast.LENGTH_LONG;
 
@@ -281,34 +229,28 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location location) {                      //is the user moves from the last location
 
-        this.mCurrentLocation = location;
-        if (mCurrLocationMarker != null)
+        this.mCurrentLocation = location;                                   //get the current location
+        if (mCurrLocationMarker != null)                                    //if the map marker exists on screen
         {
-            mCurrLocationMarker.remove();
+            mCurrLocationMarker.remove();                                   //delete the marker from the screen
         }
 
+        llCurrentLocation = new LatLng(this.mCurrentLocation.getLatitude(), this.mCurrentLocation.getLongitude());  //set the current loacation to the LatLng object
 
-        llCurrentLocation = new LatLng(this.mCurrentLocation.getLatitude(), this.mCurrentLocation.getLongitude());
-        /*MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);*/
-
-        mCurrLocationMarker =  mMap.addMarker(new MarkerOptions()
+        mCurrLocationMarker =  mMap.addMarker(new MarkerOptions()                                                   //add a marker at the current position with a custom location icon
                 .position(llCurrentLocation)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_marker)));
 
-        locLat = mCurrentLocation.getLatitude();
+        locLat = mCurrentLocation.getLatitude();                                                                    //get the current latitude and longitude to doubles
         locLong = mCurrentLocation.getLongitude();
 
-        distance_calc();
+        distance_calc();                                                                                            //run the distance calculation function
 
     }
 
-    public void distance_calc(){        //this calculates the distance from the centre of campus and the user's current location
+    public void distance_calc(){                                                                                    //this calculates the distance from the centre of campus and the user's current location
         /*double dLat = Math.toRadians(54.570792 - locLat);
         double dLon = Math.toRadians(-1.234907 - locLong);
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -323,14 +265,14 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
 
         LocationFunctions lf = new LocationFunctions();
 
-        campusCentre =  lf.TotalDistance(54.570792, locLat, -1.234907,locLong);
+        campusCentre =  lf.TotalDistance(54.570792, locLat, -1.234907,locLong);                     //checks to see how far from the centre of campus the user is
         Log.i("CM Distance", ""+campusCentre);
-        if (campusCentre > 0.14291537){
+        if (campusCentre > 0.14291537){                                                                              //if the user if further than 200 metres from the centre, show an overlay on screen with the distance
             distance_overlay.setVisibility(View.VISIBLE);
             d = String.format("%.2f", campusCentre);
             d = d + " miles from campus";
             distance_overlay.setText(d);
-        } else if (campusCentre < 0.14291537){
+        } else if (campusCentre < 0.14291537){                                                                      //if less than 200 metres, hide the overlay
             distance_overlay.setVisibility(View.INVISIBLE);
             d = String.format("%.0f", campusCentre);
             distance_overlay.setText("");
@@ -339,22 +281,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     public void addBuildings(){
-        /*mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.570607, -1.237060), new LatLng(54.570145, -1.237157), new LatLng(54.570125, -1.236800), new LatLng(54.570137, -1.236757), new LatLng(54.570193, -1.236738), new LatLng(54.570252, -1.236813), new LatLng(54.570357, -1.236785), new LatLng(54.570566, -1.236550))
-                .fillColor(COLOR_ORANGE_ARGB)
-                .strokeColor(Color.GRAY)
-                .strokeWidth(POLYGON_STROKE_WIDTH_PX));*/
 
-        /**/
-
-        /*mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.571227, -1.237479), new LatLng(54.571147, -1.236260), new LatLng(54.571564, -1.236154), new LatLng(54.571651, -1.237394))
-                .fillColor(COLOR_ORANGE_ARGB)
-                .strokeColor(Color.GRAY)
-                .strokeWidth(POLYGON_STROKE_WIDTH_PX));*/
-
-
-        building1 = mMap.addPolygon(new PolygonOptions()
+        building1 = mMap.addPolygon(new PolygonOptions()                                            //sets up all the overlay polygons used for the campus map, using latitude and longitude coordinates, along with a colour to fill the polygon
                 .clickable(true)
                 .add(new LatLng(54.570621,-1.237067),
                         new LatLng(54.570585,-1.236558),
@@ -861,7 +789,14 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
             }
         });
 
-
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.570365,-1.233085),
+                        new LatLng(54.570419,-1.233073),
+                        new LatLng(54.570696,-1.237038),
+                        new LatLng(54.570627,-1.237057))
+                .fillColor(COLOR_PATH_WHITE)
+                .strokeColor(COLOR_PATH_WHITE)
+                .strokeWidth(2));
 
         //building site
         mMap.addPolygon(new PolygonOptions()
@@ -955,6 +890,29 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                         new LatLng(54.571642,-1.236488))
                 .strokeColor(COLOR_ROAD_ARGB)
                 .strokeWidth(2));
+
+         mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.572053,-1.236574),
+                        new LatLng(54.572034,-1.236254),
+                        new LatLng(54.572056,-1.236235),
+                        new LatLng(54.572056,-1.236195),
+                        new LatLng(54.572063,-1.236153),
+                        new LatLng(54.572072,-1.236101),
+                        new LatLng(54.572084,-1.236063),
+                        new LatLng(54.572101,-1.236018),
+                        new LatLng(54.572123,-1.235948),
+                        new LatLng(54.572151,-1.23589),
+                        new LatLng(54.572177,-1.235827),
+                        new LatLng(54.572229,-1.235735),
+                        new LatLng(54.572287,-1.23662),
+                        new LatLng(54.572337,-1.237361),
+                        new LatLng(54.572154,-1.237403),
+                        new LatLng(54.571643,-1.237528),
+                        new LatLng(54.571636,-1.237441),
+                        new LatLng(54.571681,-1.237432),
+                        new LatLng(54.57164,-1.236661))
+                 .fillColor(COLOR_PATH_WHITE)
+                 .strokeWidth(0));
 
         mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.571828,-1.232742),
@@ -1170,6 +1128,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                             new LatLng(54.572294,-1.237381))
                 .fillColor(COLOR_GRASS_ARGB)
                 .strokeWidth(0));
+
+
 
         mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.570479,-1.235537),
@@ -1408,12 +1368,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     public void resetCamera(){                                                      //resets the camera to the initial gps coordinates and zppm level
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(campus, 16.5f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(campus, 16.5f));      //function that resets the map camera to the centre of campus
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {                    //sets up the navigation menu
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.action_campus_map){

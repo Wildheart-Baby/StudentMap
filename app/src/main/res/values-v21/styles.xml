@@ -1,6 +1,11 @@
 <resources>
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:colorBackground">@color/CampusMapGray</item>
+        <item name="colorPrimary">@color/CampusMapGray</item>
+        <item name="colorPrimaryDark">@color/CampusMapGray</item>
+        <item name="android:colorForeground">@color/CampusMapGray</item>
+        <item name="android:navigationBarColor">@color/CampusMapGray</item>
     </style>
 
     <style name="MapLoadTheme" parent="Theme.AppCompat.NoActionBar">

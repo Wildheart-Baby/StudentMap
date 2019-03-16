@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.v8181191.studentmap.MainActivity">
+    <group android:id="@+id/navigation" >
+        <item
+            android:id="@+id/action_campus_map"
+            android:orderInCategory="100"
+            android:title="@string/action_campus_map"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/action_current_Location"
+            android:orderInCategory="101"
+            android:title="@string/action_current_location"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/action_place_search"
+            android:orderInCategory="102"
+            android:title="@string/action_place_search"
+            app:showAsAction="never" />
+    </group>
+    <group android:id="@+id/places"  >
+        <item
+            android:id="@+id/action_place_favourites"
+            android:orderInCategory="103"
+            android:title="@string/action_place_favourite"
+            app:showAsAction="never" />
+    </group>
+</menu>

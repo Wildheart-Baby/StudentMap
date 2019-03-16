@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class PlacesAdapter extends BaseAdapter{
 
     static class ViewHolder {
-        TextView placeName, rating, theratings, opentimes, address, placetype;
+        TextView placeName, rating, theratings, opentimes, address, placetype, cost;
         ImageView stars, placephoto;
 
     }
@@ -72,6 +72,7 @@ public class PlacesAdapter extends BaseAdapter{
             holder.stars = convertView.findViewById(R.id.imgStarRating);
             holder.address = convertView.findViewById(R.id.txtAddress);
             holder.placephoto = convertView.findViewById(R.id.imgPhoto);
+            holder.cost = convertView.findViewById(R.id.txtCost);
 
             convertView.setTag(holder);
 
@@ -134,7 +135,17 @@ public class PlacesAdapter extends BaseAdapter{
             convertView.setBackgroundColor(Color.parseColor("#C0C0BB"));
         }
 
-
+        if(placeListItems.getCost() == 4){
+           holder.cost.setText("££££");
+        } else if(placeListItems.getCost() == 3){
+            holder.cost.setText("£££");
+        } else if(placeListItems.getCost() == 2){
+            holder.cost.setText("££");
+        } else if(placeListItems.getCost() == 1){
+            holder.cost.setText("£");
+        } else if(placeListItems.getCost() == 0){
+            holder.cost.setText("");
+        }
 
         Log.i("StudMap", position + "done");
         return convertView;

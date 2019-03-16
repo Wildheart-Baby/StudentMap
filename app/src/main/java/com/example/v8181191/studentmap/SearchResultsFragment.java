@@ -237,9 +237,13 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                 } catch(org.json.JSONException exception){
                                 }
 
-
                                 placeListItems.setOpenTimes(placeOpenTimes);
 
+                                try {
+                                    placeListItems.setCost(places.getJSONObject(i).getInt("price_level"));
+                                } catch (org.json.JSONException exception){
+                                    placeListItems.setCost(0);
+                                }
                                 try {
                                     placeListItems.setRating(places.getJSONObject(i).getDouble("rating"));
                                 } catch(org.json.JSONException exception){

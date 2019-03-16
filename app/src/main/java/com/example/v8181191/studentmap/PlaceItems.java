@@ -11,6 +11,7 @@ public class PlaceItems {
     private String name, description, photo, open, place_id, place_type, number_ratings, address;
     private Long sunrise, sunset;
     private Bitmap  placePhoto;
+    private int cost;
 
     public String getPlaceName() {return name;}
     public void setPlaceName(String name) {this.name = name;}
@@ -47,5 +48,8 @@ public class PlaceItems {
 
     public Bitmap getPhoto() {return placePhoto;}
     public void setPhoto(Bitmap placePhoto) {this.placePhoto = placePhoto;}
+
+    public int getCost() {return cost;}
+    public void setCost(int cost) {this.cost = cost;}
 
 }

@@ -284,7 +284,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void openMaps(Double lat, Double lng){
-        Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"+");
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"+&mode=w");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
