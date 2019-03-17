@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textAlignment="center"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.example.v8181191.studentmap.PlacesSearch">
 
 

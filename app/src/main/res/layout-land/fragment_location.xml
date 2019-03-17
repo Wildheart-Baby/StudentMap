@@ -5,6 +5,7 @@
     android:id="@+id/frgLocation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
     android:background="@color/CampusMapGray"
     tools:context="com.example.v8181191.studentmap.LocationFragment">
 
@@ -62,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/txtAddress"
         android:layout_alignTop="@+id/imgPhone"
+        android:layout_marginTop="3dp"
         android:textColor="@android:color/black"
         tools:layout_editor_absoluteX="64dp"
         tools:layout_editor_absoluteY="113dp" />

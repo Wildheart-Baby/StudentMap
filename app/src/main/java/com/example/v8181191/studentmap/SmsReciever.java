@@ -12,6 +12,12 @@ import android.widget.Toast;
  * Created by Wildheart on 16/03/2019.
  */
 
+/**
+ * This code was found at https://www.youtube.com/redirect?v=pke6sMxOsuw&event=video_description&redir_token=-0UcSnhrTy4tCyrF1X4vrziV_kZ8MTU1Mjg2NjUyNEAxNTUyNzgwMTI0&q=https%3A%2F%2Fdrive.google.com%2Fdrive%2Ffolders%2F1K_bhMwjwb31izBjjEP9vMvxVtfTcF9mp%3Fusp%3Dsharing
+ * by youtuber Sasasushiq
+ * https://www.youtube.com/watch?v=pke6sMxOsuw
+ */
+
 public class SmsReciever extends BroadcastReceiver{         //sets the class up to extend the broadcast reciever class
 
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";       //sets a string with the broadcast message type
