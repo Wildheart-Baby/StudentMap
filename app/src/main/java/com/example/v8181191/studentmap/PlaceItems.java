@@ -13,6 +13,8 @@ public class PlaceItems {
     private Bitmap  placePhoto;
     private int cost;
 
+
+
     public String getPlaceName() {return name;}
     public void setPlaceName(String name) {this.name = name;}
 
@@ -51,5 +53,6 @@ public class PlaceItems {
 
     public int getCost() {return cost;}
     public void setCost(int cost) {this.cost = cost;}
+
 
 }

@@ -20,6 +20,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.List;
+
 import static com.android.volley.VolleyLog.TAG;
 
 
@@ -43,6 +45,7 @@ public class SearchBoxFragment extends Fragment {
     String searchTerm;
     TextView searchBox;
     Button search;
+    DatabaseHelper db;
 
 
     public SearchBoxFragment() {
@@ -70,6 +73,7 @@ public class SearchBoxFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DatabaseHelper(getContext());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -85,11 +89,15 @@ public class SearchBoxFragment extends Fragment {
 
         searchBox = view.findViewById(R.id.etSearchTerm);
         search = view.findViewById(R.id.btnSearch);
+
+        List<Search> searches = db.getSearches();
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getSearchTerm();
                 searchTerm = searchBox.getText().toString();
+                db.addFavourite(new Search(searchTerm));
                 mListener.onReceiveSearch(searchTerm);
             }
         });

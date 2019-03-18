@@ -2,6 +2,7 @@ package com.example.v8181191.studentmap;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -20,12 +21,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,15 +52,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private GoogleMap mMap;                                                                         //sets up the variables and elements that the activity  uses
+    public static GoogleMap mMap;                                                                         //sets up the variables and elements that the activity  uses
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private final String TAG = "StudentMapApp";
     private android.location.Location mCurrentLocation;
-    LatLng llCurrentLocation;
+    LatLng llCurrentLocation, markerPosition;
     Marker mCurrLocationMarker;
     DrawerLayout drawer;
     NavigationView navigationView;
@@ -65,13 +70,19 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     int i;
 
     LatLng campus;
+    LocationFunctions lf;
+    Polyline walkingDirections;
 
     Polygon building1, building2, building3, building4, building5, building6, building7, building8, building9, building10, building11, building12, building13, building14;
     Polygon building15, building16, building17, building18, building19,building20, building21, building22, building23, building24, building25, building26, building27;
 
+    Marker buildingOne, buildingTwo, buildingThree, buildingFour, buildingFive, buildingSix, buildingSeven, buildingEight, buildingNine, buildingTen, buildingEleven, buildingTwelve, buildingThirteen, buildingFourteen;
+    Marker buildingFifteen, buildingSixteen, buildingSeventeen, buildingEighteen, buildingNineteen,buildingTwenty, buildingTwentyOne, buildingTwentyTwo, buildingTwentyThree, buildingTwentyFour;
+
     String type, d;
     TextView distance_overlay;
-    Double locLat, locLong, campusCentre, distance;
+    Double locLat, locLong, campusCentre, distance, markerLat, markerLng;
+    Context context;
 
     private static final int COLOR_ORANGE_ARGB = 0xFFF25E21;
     private static final int COLOR_ROAD_ARGB = 0xff4D5156;
@@ -88,6 +99,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     protected void onCreate(Bundle savedInstanceState) {                                                    //sets up the layout the activity uses along with the toolbar, the navigation drawer, map fragment and floating action button that re-centres the map
         super.onCreate(savedInstanceState);                                                                 //it also builds the gps connection
         setContentView(R.layout.activity_campus_map);
+        context = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -126,10 +138,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (mMap != null){
+        lf = new LocationFunctions();
+        //if (mMap != null){ mapFragment.getView().setClickable(false); }
 
-            mapFragment.getView().setClickable(false);
-        }
+
+
 
     }
     @Override
@@ -167,7 +180,14 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         }.start();                                                                                      //start the timer
     }
 
+    public void directions(Double markerLat, double markerLng){
+        lf.GetDirections(locLat, locLong, markerLat, markerLng, context);
+        /*Polyline line = CampusMap.mMap.addPolyline(new PolylineOptions()
+                .addAll(LocationFunctions.mapPoints)
+                .width(5)
+                .color(Color.CYAN));*/
 
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {                                                       //when the map is loaded
@@ -178,7 +198,143 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         addBuildings();                                                                                 //add the building polygons
 
         resetCamera();                                                                                  //set the map camera to the centre of campus
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                String mrkr = (String) marker.getTag();
+                if(mrkr != null) {
+                    switch (mrkr) {
+                        case "one":
+                            resetCamera();
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "two":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "three":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "four":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "five":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "six":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "seven":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "eight":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "nine":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "ten":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "eleven":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "twelve":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "thirteen":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "fourteen":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "fifteen":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "sixteen":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "seventeen":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "eighteen":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "nineteen":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "twenty":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "twentyone":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "twentytwo":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "twentythree":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        case "twentyfour":
+                            markerLat = marker.getPosition().latitude;
+                            markerLng = marker.getPosition().longitude;
+                            directions(markerLat, markerLng);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                resetCamera();
+                return false;
+            }
 
+        });
+        //mMap.setOnMarkerClickListener(new );
     }
 
     @Override
@@ -310,10 +466,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building1.setTag("1");
-        mMap.addMarker(new MarkerOptions()
+        buildingOne = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.570381,-1.236945))
                 .title("The Curve (T)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.one_marker)));
+        buildingOne.setTag("one");
 
         building2 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -361,10 +518,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building2.setTag("2");
-        mMap.addMarker(new MarkerOptions()
+        buildingTwo = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.569961,-1.236089))
                 .title("Library (L)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.two_marker)));
+        buildingTwo.setTag("two");
 
         building3 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -402,10 +560,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building3.setTag("3");
-        mMap.addMarker(new MarkerOptions()
+        buildingThree = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.570126,-1.234845))
                 .title("Student Union")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.three_marker)));
+        buildingThree.setTag("three");
 
         building4 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -416,11 +575,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building4.setTag("4");
-        mMap.addMarker(new MarkerOptions()
+        buildingFour = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.570056,-1.23382))
                 .title("Greig (G)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.four_marker)));
-
+        buildingFour.setTag("four");
 
         building5 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -452,10 +611,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building5.setTag("5"); //54.569639,-1.23419
-        mMap.addMarker(new MarkerOptions()
+        buildingFive = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.569639,-1.23419))
                 .title("Europa (IT/OL)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.five_marker)));
+        buildingFive.setTag("five");
 
         building6 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -476,10 +636,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building6.setTag("6");
-        mMap.addMarker(new MarkerOptions()
+        buildingSix=  mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.569286,-1.234944))
                 .title("Victoria (V)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.six_marker)));
+        buildingSix.setTag("six");
 
 
         building7 = mMap.addPolygon(new PolygonOptions()
@@ -493,10 +654,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building7.setTag("7");
-        mMap.addMarker(new MarkerOptions()
+        buildingSeven = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.568462,-1.233892))
                 .title("Mercuria (MC)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.seven_marker)));
+        buildingSeven.setTag("seven");
 
         building8 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -518,10 +680,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building8.setTag("8");
-        mMap.addMarker(new MarkerOptions()
+        buildingEight = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.569124,-1.236141))
                 .title("Olympia (OLY)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.eight_marker)));
+        buildingEight.setTag("eight");
 
         building9 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -546,15 +709,17 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building9.setTag("9");
-        mMap.addMarker(new MarkerOptions()
+        buildingNine = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.569286,-1.237451))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.nine_marker)));
+        buildingNine.setTag("nine");
 
-        mMap.addMarker(new MarkerOptions()
+        buildingTen = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.571083,-1.235672))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ten_marker)));
+        buildingTen.setTag("ten");
 
         building11 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -573,10 +738,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building11.setTag("11");
-        mMap.addMarker(new MarkerOptions()
+        buildingEleven = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.57124,-1.236662))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.eleven_marker)));
+        buildingEleven.setTag("eleven");
+
 
         building12 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -597,10 +764,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building12.setTag("12");
-        mMap.addMarker(new MarkerOptions()
+        buildingTwelve = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.571729,-1.235879))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twelve_marker)));
+        buildingTwelve.setTag("twelve");
+
 
 
         building14 = mMap.addPolygon(new PolygonOptions()
@@ -609,10 +778,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building14.setTag("14");
-        mMap.addMarker(new MarkerOptions()
+        buildingFourteen = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.571886,-1.234682))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.fourteen_marker)));
+        buildingFourteen.setTag("fourteen");
 
         building15 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -620,12 +790,13 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building15.setTag("15");
-        mMap.addMarker(new MarkerOptions()
+        buildingFifteen = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.572517,-1.234878))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.fifteen_marker)));
+        buildingFifteen.setTag("fifteen");
 
-        building16 = mMap.addPolygon(new PolygonOptions()
+                building16 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(new LatLng(54.572608,-1.234326),
                         new LatLng(54.572588,-1.234087),
@@ -644,10 +815,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building16.setTag("16");
-        mMap.addMarker(new MarkerOptions()
+        buildingSixteen = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.572195,-1.234094))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.sixteen_marker)));
+        buildingSixteen.setTag("sixteen");
 
         building17 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -664,11 +836,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building17.setTag("17");
 
-        mMap.addMarker(new MarkerOptions()
+        buildingSeventeen = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.572395,-1.233284))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.seventeen_marker)));
+         buildingSeventeen.setTag("seventeen");
 
-        building18 = mMap.addPolygon(new PolygonOptions()
+                building18 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(new LatLng(54.572298,-1.233651),
                         new LatLng(54.572285,-1.233494),
@@ -677,11 +850,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building18.setTag("18");
-        mMap.addMarker(new MarkerOptions()
+        buildingEighteen = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.572162,-1.233581))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.eighteen_marker)));
+       buildingEighteen.setTag("eighteen");
 
-        building19 = mMap.addPolygon(new PolygonOptions()
+                building19 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(new LatLng(54.571847,-1.23374),
                         new LatLng(54.571769,-1.232743),
@@ -691,9 +865,10 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building19.setTag("19");
-        mMap.addMarker(new MarkerOptions()
+        buildingNineteen = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.571697,-1.233249))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.nineteen_marker)));
+       buildingNineteen.setTag("nineteen");
 
         building20 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
@@ -704,11 +879,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building20.setTag("20");
-        mMap.addMarker(new MarkerOptions()
+        buildingTwenty = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.571347,-1.232328))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_marker)));
+        buildingTwenty.setTag("twenty");
 
-        building21 = mMap.addPolygon(new PolygonOptions()
+                building21 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(new LatLng(54.571257,-1.234309),
                         new LatLng(54.571205,-1.233609),
@@ -719,12 +895,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building21.setTag("21");
-        mMap.addMarker(new MarkerOptions()
+        buildingTwentyOne = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.571058,-1.233947))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_one_marker)));
+        buildingTwentyOne.setTag("twentyone");
 
-
-        building22 = mMap.addPolygon(new PolygonOptions()
+                building22 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(new LatLng(54.571071,-1.233139),
                         new LatLng(54.57106,-1.232927),
@@ -739,11 +915,12 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building22.setTag("22");
-        mMap.addMarker(new MarkerOptions()
+        buildingTwentyTwo = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.570711,-1.233218))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_two_marker)));
+        buildingTwentyTwo.setTag("twentytwo");
 
-        building23 = mMap.addPolygon(new PolygonOptions()
+                building23 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(new LatLng(54.570882,-1.233593),
                         new LatLng(54.570875,-1.233491),
@@ -758,9 +935,10 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building23.setTag("23");
-        mMap.addMarker(new MarkerOptions()
+        buildingTwentyThree = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.570717,-1.233619))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_three_marker)));
+        buildingTwentyThree.setTag("twentythree");
 
 
         building24 = mMap.addPolygon(new PolygonOptions()
@@ -778,9 +956,10 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_ORANGE_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building24.setTag("24");
-        mMap.addMarker(new MarkerOptions()
+        buildingTwentyFour = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(54.570768,-1.234372))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_four_marker)));
+         buildingTwentyFour.setTag("twentyfour");
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -1365,6 +1544,9 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         //navigationView.setBackgroundResource(R.drawable.drawer_background);
         navigationView.setBackgroundColor(getResources().getColor(R.color.CampusMapKey));           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
 
+
+
+
     }
 
     public void resetCamera(){                                                      //resets the camera to the initial gps coordinates and zppm level
@@ -1391,5 +1573,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 }
