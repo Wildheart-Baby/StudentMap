@@ -47,4 +47,4 @@ public class SmsReciever extends BroadcastReceiver{         //sets the class up 
             }
         }
     }
-}
+} //add functionality to show user path to where friend sent text message saying where they are

@@ -1,9 +1,12 @@
 package com.example.v8181191.studentmap;
 
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,22 +15,28 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.google.android.gms.actions.SearchIntents;
 import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 
 
 
-public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener, SearchResultsFragment.LocationListener, LocationFragment.OnFragmentInteractionListener,  NavigationView.OnNavigationItemSelectedListener{
+public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener, SearchResultsFragment.LocationListener, LocationFragment.OnFragmentInteractionListener,  NavigationView.OnNavigationItemSelectedListener, ConnectivityReceiver.ConnectivityReceiverListener{
 
     private final String TAG = "StudentMapApp";                                                             //sets up the strings and other elements used by the activity
     String searchString;
     SearchResultsFragment fragment;
     DrawerLayout drawer;
     NavigationView navigationView;
+
+    RelativeLayout placesContainer;
+    static TextView json;
 
 
     @Override
@@ -46,6 +55,16 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Intent intent = this.getIntent();
+        if (SearchIntents.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.i("Places Search", query);
+        }
+
+        placesContainer = (RelativeLayout)findViewById(R.id.fragment_container) ;
+        checkConnection(); //runs the checkConnection function
+        json = (TextView)findViewById(R.id.txtJson);
 
     }
 
@@ -99,6 +118,38 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    // Method to manually check connection status
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    // Showing the status in Snackbar
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (isConnected) {
+            //fab.setVisibility(View.VISIBLE);
+        } else {
+            message = "Sorry! You are not connected to internet";
+            color = Color.RED;
+            //fab.setVisibility(View.INVISIBLE);
+            Snackbar snackbar = Snackbar
+                    .make(placesContainer, message, Snackbar.LENGTH_LONG);
+
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(color);
+            snackbar.show();
+        }
+
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
     }
 
 }

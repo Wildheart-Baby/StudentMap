@@ -64,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addFavourite(Search search){
+    public void addSearch(Search search){
         SQLiteDatabase db = this.getReadableDatabase();
 
         ContentValues values = new ContentValues();
@@ -74,8 +74,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Search>  getSearches(){
-        List<Search> searchesList = new ArrayList<>();
+    public ArrayList<String> getSearches(){
+        ArrayList<String> searchesList = new ArrayList<>();
+        searchesList.clear();
         String searchQuery = "select * from " + TABLE_SEARCHES;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -83,9 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(c.moveToFirst()){
             do {
-                Search search = new Search();
-                search.setSearch(c.getString(1));
-                searchesList.add(search);
+                searchesList.add(c.getString(1));
             } while (c.moveToNext());
         }
         return searchesList;

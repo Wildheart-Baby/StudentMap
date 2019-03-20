@@ -200,12 +200,15 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         resetCamera();                                                                                  //set the map camera to the centre of campus
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                String mrkr = (String) marker.getTag();
-                if(mrkr != null) {
-                    switch (mrkr) {
-                        case "one":
-                            resetCamera();
+            public boolean onMarkerClick(Marker marker) {                                                       //sets up an on marker click listener
+                String mrkr = (String) marker.getTag();                                                 //gets the tag from the marker
+                if(mrkr != null) {                                                                      //if the marker tag isn't null
+                    markerLat = marker.getPosition().latitude;
+                    markerLng = marker.getPosition().longitude;
+                    directions(markerLat, markerLng);
+                    /*switch (mrkr) {                                                                     //a switch case that takes the latitude and longitude of the map marker
+                        case "one":                                                                     //and passes it to a function that sends the coordinates of the users location
+                            resetCamera();                                                              //and the cordinates of the map marker and gets a json string back with directions between both
                             markerLat = marker.getPosition().latitude;
                             markerLng = marker.getPosition().longitude;
                             directions(markerLat, markerLng);
@@ -327,7 +330,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                             break;
                         default:
                             break;
-                    }
+                    }*/
                 }
                 resetCamera();
                 return false;

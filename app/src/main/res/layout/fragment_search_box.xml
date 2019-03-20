@@ -17,7 +17,7 @@
             android:layout_alignBottom="@+id/etSearchTerm"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:text="@string/Search_Box_Fragment" />
 
         <AutoCompleteTextView

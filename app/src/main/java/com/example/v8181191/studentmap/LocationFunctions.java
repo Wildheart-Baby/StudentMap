@@ -33,7 +33,7 @@ public class LocationFunctions {
     Double mpLat, mpLng;
     Polyline line;
 
-    public Double TotalDistance(Double PlaceLat, Double UserLat, Double PlaceLng, Double UserLng){
+    public Double TotalDistance(Double PlaceLat, Double UserLat, Double PlaceLng, Double UserLng){          //function that
         double dLat = Math.toRadians(PlaceLat - UserLat);
         double dLon = Math.toRadians(PlaceLng - UserLng);
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -54,16 +54,6 @@ public class LocationFunctions {
 
         getPath(UserLat, UserLng, markerLat, markerLng, context);
 
-        /*Polyline line = CampusMap.mMap.addPolyline(new PolylineOptions()
-                .addAll(mapPoints)
-                .width(5)
-                .color(Color.CYAN));*/
-        /*CampusMap.mMap.addPolyline(new PolylineOptions()
-                                .addAll(mapPoints)
-                                .width(5)
-                                .color(Color.CYAN));*/
-
-        //return directions;
     }
 
         public void getPath(Double UserLat, Double UserLng, final Double markerLat, final Double markerLng, Context context) {
@@ -98,8 +88,6 @@ public class LocationFunctions {
                             mapPoint = new LatLng(mpLat,mpLng);
                             mapPoints.add(mapPoint);
 
-                            ///placeListItems.setLat(stepsArray.getJSONObject(i).getJSONObject("start_location").getDouble("lat"));
-                            //placeListItems.setLng(stepsArray.getJSONObject(i).getJSONObject("start_location").getDouble("lng"));
                         }
                             mapPoint = new LatLng(markerLat, markerLng);
                             mapPoints.add(mapPoint);
@@ -112,8 +100,8 @@ public class LocationFunctions {
 
                         line = CampusMap.mMap.addPolyline(new PolylineOptions()
                                 .addAll(mapPoints)
-                                .width(5)
-                                .color(Color.BLUE));
+                                .width(10)
+                                .color(Color.GREEN));
                             //Log.i("Location Functions", ""+mapPoints.size());
 
                             } catch (Exception e) {

@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.android.volley.VolleyLog.TAG;
@@ -43,10 +47,11 @@ public class SearchBoxFragment extends Fragment {
 
     private SearchListener mListener;
     String searchTerm;
-    TextView searchBox;
+    AutoCompleteTextView searchBox;
     Button search;
     DatabaseHelper db;
-
+    ArrayList<String> searches;
+    String[] srch;
 
     public SearchBoxFragment() {
         // Required empty public constructor
@@ -78,6 +83,7 @@ public class SearchBoxFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -89,16 +95,36 @@ public class SearchBoxFragment extends Fragment {
 
         searchBox = view.findViewById(R.id.etSearchTerm);
         search = view.findViewById(R.id.btnSearch);
+        searches = new ArrayList<>();
+        searches = db.getSearches();
+        srch = new String[searches.size()];
 
-        List<Search> searches = db.getSearches();
+        for (String search : searches) {
+            String log = "Search: " + search;
+            Log.i("SBF: : ", log);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, searches);
+        searchBox.setThreshold(1);
+        searchBox.setAdapter(adapter);
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //getSearchTerm();
+                PlacesSearch.json.setText("");
                 searchTerm = searchBox.getText().toString();
-                db.addFavourite(new Search(searchTerm));
-                mListener.onReceiveSearch(searchTerm);
+                Log.i("SBF: : ", ""+ searches.size());
+                if (searches.contains(searchTerm)) {
+                    Toast.makeText(getContext(), "Search in array", Toast.LENGTH_LONG).show();
+                    mListener.onReceiveSearch(searchTerm);
+                } else {
+                    Toast.makeText(getContext(), "New search", Toast.LENGTH_LONG).show();
+                    db.addSearch(new Search(searchTerm));
+                    mListener.onReceiveSearch(searchTerm);
+                }
+
+                searches = db.getSearches();
+
             }
         });
         return view;
@@ -139,11 +165,5 @@ public class SearchBoxFragment extends Fragment {
         void onReceiveSearch(String search);
     }
 
-    public void getSearchTerm(){
-        searchTerm = searchBox.getText().toString();
-        Log.i("StudMapSBF", searchTerm);
-        mListener.onReceiveSearch(searchTerm);
-        //mGoogleApiClient.disconnect();
-    }
 
 }

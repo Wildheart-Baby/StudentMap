@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,11 +63,10 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     private android.location.Location mCurrentLocation;
     Double locLat, locLong;
     ArrayList<PlaceItems> placeList;
-    TextView json;
+
     ListView results;
     String placeid;
     Boolean firstTime = true;
-
 
 
     public SearchResultsFragment() {
@@ -94,14 +96,14 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         if (getArguments() != null) {
 
         }
+
+
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
 
         mGoogleApiClient.connect();
-
-
     }
 
     @Override
@@ -116,16 +118,17 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
             firstTime = savedInstanceState.getBoolean("first_time");
         }
 
-        json = view.findViewById(R.id.txtJson);
+        //json = view.findViewById(R.id.txtJson);
         results = view.findViewById(R.id.lvResults);
         results.requestFocus();
         results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {//on clicking a shopping list
+                if(ConnectivityReceiver.isConnected() == true){
                 PlaceItems placeListItems = (PlaceItems) arg0.getItemAtPosition(arg2);//read the item at the list position that has been clicked
                 placeid = placeListItems.getPlaceId();//get the name of the shopping list table
-
                 lListener.onReceiveLocationId(placeid, locLat, locLong);
+                } else { Toast.makeText(getActivity(), "Sorry you are't connected to the intenet", Toast.LENGTH_LONG).show();    }   //shows a toast message informing the user they aren't connected to the internet
             }
         });
 
@@ -157,10 +160,6 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         super.onDetach();
         mGoogleApiClient.disconnect();
     }
-
-
-
-
 
     /**
      * This interface must be implemented by activities that contain this
@@ -274,7 +273,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                json.setText("That didn't work!");
+                PlacesSearch.json.setText("That didn't work!");
             }
         });
         queue.add(stringRequest);
@@ -300,9 +299,11 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         //json.setText(url);
         //url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + locLat + "," + locLong + "&radius=1500&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
 
-        if(firstTime == true){
-            url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?openNow=true&keyword=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
-            getPlaces(url);
+        if(firstTime == true) {
+            if(ConnectivityReceiver.isConnected() == true){
+                url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?openNow=true&keyword=food&location=" + locLat + "," + locLong + "&rankby=distance&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+                getPlaces(url);
+            }
         }
 
     }
