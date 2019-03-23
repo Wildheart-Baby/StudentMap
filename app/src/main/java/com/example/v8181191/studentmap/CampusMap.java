@@ -210,6 +210,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                     markerLat = marker.getPosition().latitude;
                     markerLng = marker.getPosition().longitude;
                     directions(markerLat, markerLng);
+                    return true;
                     /*switch (mrkr) {                                                                     //a switch case that takes the latitude and longitude of the map marker
                         case "one":                                                                     //and passes it to a function that sends the coordinates of the users location
                             resetCamera();                                                              //and the cordinates of the map marker and gets a json string back with directions between both
@@ -337,7 +338,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                     }*/
                 }
                 resetCamera();
-                return false;
+                return true;
             }
 
         });
