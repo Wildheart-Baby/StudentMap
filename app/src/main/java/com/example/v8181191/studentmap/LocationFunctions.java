@@ -2,6 +2,8 @@ package com.example.v8181191.studentmap;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -10,7 +12,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -19,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,8 +39,9 @@ public class LocationFunctions {
     LatLng mapPoint;
     Double mpLat, mpLng;
     Polyline line;
+    Location location;
 
-    public Double TotalDistance(Double PlaceLat, Double UserLat, Double PlaceLng, Double UserLng){          //function that
+    public Double TotalDistance(Double PlaceLat, Double UserLat, Double PlaceLng, Double UserLng){          //function that calculates the distance between the user and the coordinates passed to the function
         double dLat = Math.toRadians(PlaceLat - UserLat);
         double dLon = Math.toRadians(PlaceLng - UserLng);
         double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -50,11 +58,8 @@ public class LocationFunctions {
         return distance;
     }
 
-    public void GetDirections(Double UserLat, Double UserLng, Double markerLat, Double markerLng, Context context){
 
-        getPath(UserLat, UserLng, markerLat, markerLng, context);
-
-    }
+    public void GetDirections(Double UserLat, Double UserLng, Double markerLat, Double markerLng, Context context){  getPath(UserLat, UserLng, markerLat, markerLng, context); }
 
         public void getPath(Double UserLat, Double UserLng, final Double markerLat, final Double markerLng, Context context) {
 
@@ -62,14 +67,16 @@ public class LocationFunctions {
             mapPoints.clear();//clear the map points array
 
             url = "https://maps.googleapis.com/maps/api/directions/json?origin="+UserLat+","+UserLng+"&destination="+markerLat+","+markerLng+"&mode=walking&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+                //the url that uses the current location of the user and the locaton of the map marker to get the direction steps for the path
+
             //Log.i("Location Functions", url);
-            RequestQueue queue = Volley.newRequestQueue(context); //sets up a reference to the volley library queue
+            RequestQueue queue = Volley.newRequestQueue(context);                                   //sets up a reference to the volley library queue
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            //Log.i("Location Functions", response);
+                            Log.i("Location Functions", response);
                     try {
                         // Tranform the string into a json object
                         final JSONObject json = new JSONObject(response);
@@ -84,7 +91,6 @@ public class LocationFunctions {
                             //placeListItems = new PlaceItems();
                             mpLat = stepsArray.getJSONObject(i).getJSONObject("start_location").getDouble("lat");
                             mpLng = stepsArray.getJSONObject(i).getJSONObject("start_location").getDouble("lng");
-                            Log.i("Location Functions", mpLat + " " + mpLng);
                             mapPoint = new LatLng(mpLat,mpLng);
                             mapPoints.add(mapPoint);
 
@@ -97,11 +103,12 @@ public class LocationFunctions {
                             line.remove();
                         }
 
-
+                        List<PatternItem> pattern = Arrays.asList(new Dot(), new Gap(10));
                         line = CampusMap.mMap.addPolyline(new PolylineOptions()
                                 .addAll(mapPoints)
-                                .width(10)
-                                .color(Color.GREEN));
+                                .width(20)
+                                .pattern(pattern)
+                                .color(Color.rgb(00,221,255)));
                             //Log.i("Location Functions", ""+mapPoints.size());
 
                             } catch (Exception e) {
@@ -116,5 +123,4 @@ public class LocationFunctions {
             });
             queue.add(stringRequest);
         }
-
 }

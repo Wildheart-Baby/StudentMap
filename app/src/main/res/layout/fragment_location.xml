@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,6 +10,12 @@
     tools:context="com.example.v8181191.studentmap.LocationFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 
     <TextView
         android:id="@+id/txtName"
@@ -32,14 +38,15 @@
         android:layout_toRightOf="@+id/imgLocation"
         android:textColor="@android:color/black" />
 
-    <View
-        android:id="@+id/Divider1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/imgLocation"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/place_autocomplete_search_hint" />
+        <View
+            android:id="@+id/Divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/imgLocation"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/place_autocomplete_search_hint" />
 
     <TextView
         android:id="@+id/txtOpenTimes"
@@ -50,23 +57,24 @@
         android:layout_marginTop="5dp"
         android:textColor="@android:color/black" />
 
-    <View
-        android:id="@+id/Divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/imgPhone"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/place_autocomplete_search_hint" />
+        <View
+            android:id="@+id/Divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/imgPhone"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/place_autocomplete_search_hint" />
 
-    <TextView
-        android:id="@+id/txtPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txtAddress"
-        android:layout_alignTop="@+id/imgPhone"
-        android:layout_marginTop="5dp"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/txtPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txtAddress"
+            android:layout_alignTop="@+id/imgPhone"
+            android:layout_marginTop="7dp"
+            android:textColor="@android:color/black" />
 
     <View
         android:id="@+id/Divider3"
@@ -109,30 +117,7 @@
         android:background="@android:color/transparent"
         android:src="@drawable/lf_map2" />
 
-    <TextView
-        android:id="@+id/lblBorder"
-        android:layout_width="234dp"
-        android:layout_height="234dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="7dp"
-        android:background="@android:color/black"
-        android:text="TextView" />
-
-    <fragment
-        android:id="@+id/mvLocation"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="230dp"
-        android:layout_height="230dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        map:uiRotateGestures="false"
-        map:uiScrollGestures="false"
-        map:uiTiltGestures="false"
-        map:uiZoomControls="false" />
-
-    <TextView
+        <TextView
         android:id="@+id/txtMiles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -150,4 +135,30 @@
         android:layout_below="@+id/Divider3"
         android:layout_marginTop="3dp"
         android:src="@drawable/lf_distance" />
-</RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/txtMiles"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/black"
+            android:padding="2dp">
+
+            <fragment
+                android:id="@+id/mvLocation"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:layout_width="230dp"
+                android:layout_height="230dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                map:uiRotateGestures="false"
+                map:uiScrollGestures="false"
+                map:uiTiltGestures="false"
+                map:uiZoomControls="false" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

@@ -82,10 +82,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
 
     String type, d;
     TextView distance_overlay;
-    Double locLat, locLong, campusCentre, distance, markerLat, markerLng;
+    Double locLat, locLong, campusCentre, distance, markerLat, markerLng, intentMarkerLat, intentMarkerLng;
     Context context;
+    Boolean intentExtras = false;
 
-    private static final int COLOR_ORANGE_ARGB = 0xFFF25E21;
+    private static final int COLOR_ORANGE_ARGB = 0xFFF25E21;                                                //sets up the colours used by the overlay
     private static final int COLOR_ROAD_ARGB = 0xff4D5156;
     private static final int COLOR_GRASS_ARGB = 0xff6BBF5C;
     private static final int COLOR_BUILDING_ARGB = 0xffEFEC68;
@@ -108,56 +109,59 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
 
         campus = new LatLng(54.570792, -1.234907);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        distance_overlay = findViewById(R.id.lblDistanceOverlay);
-        campusKey = findViewById(R.id.rlCampusKey);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);                       //sets up the floating action button
+        distance_overlay = findViewById(R.id.lblDistanceOverlay);                                       //sets up the distance overlay
+        campusKey = findViewById(R.id.rlCampusKey);                                                     //sets up the campus key layout
+        fab.setOnClickListener(new View.OnClickListener() {                                             //sets up the floating action button listener to reset the map zoom level and centre
             @Override
             public void onClick(View view) {
-                //LatLng campus = new LatLng(54.570254, -1.235165);
                 resetCamera();
             }
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()               //sets up the map fragment
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapFragment.getView().setClickable(false);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)                                    //builds the gps connection for the map
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);                                       //sets up the navigation drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);                                  //sets up the navigation drawer to lisen for clicks
         navigationView.setNavigationItemSelectedListener(this);
 
-        lf = new LocationFunctions();
-        //if (mMap != null){ mapFragment.getView().setClickable(false); }
+        lf = new LocationFunctions();                                           //sets up a reference to the location functions class
 
-        if (getIntent().getAction() != null && getIntent().getAction().equals("android.intent.action.SEARCH")) {
-            String query = getIntent().getStringExtra(SearchManager.QUERY);
-            Log.i("Query:",query);   //query is the search word
+        Intent intent = getIntent();                                            //gets the intent
+        Bundle extras = intent.getExtras();                                     //gets the extras from the intent into a bundle
+
+        if (extras != null) {                                                   //if the extras exist
+            Log.i("Location Functions", "running extras");
+            intentMarkerLat = extras.getDouble("ARG_MARKERLAT");            //get the latitude
+            intentMarkerLng = extras.getDouble("ARG_MARKERLNG");            //get the longitude
+            intentExtras = true;                                                //set the boolean as true
+
         }
-
 
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {                                                     //sets up the campus key menu item
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.campus_map, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {                                               //sets up the menu to show the map key when the button is clicked
         switch (item.getItemId()) {
             case R.id.action_campus_key:
                     ShowCampusMap();
@@ -185,6 +189,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     public void directions(Double markerLat, double markerLng){
+        //locLat = lf.UsetLat();                                                                  //get the current latitude and longitude to doubles
+        //locLong = lf.UserLng();
+        //locLat = mCurrentLocation.getLatitude();
+        //locLong = mCurrentLocation.getLongitude();
+        Log.i("SMS", locLat +" "+ locLong +" "+ markerLat +" "+ markerLng);
         lf.GetDirections(locLat, locLong, markerLat, markerLng, context);
         /*Polyline line = CampusMap.mMap.addPolyline(new PolylineOptions()
                 .addAll(LocationFunctions.mapPoints)
@@ -207,142 +216,16 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
             public boolean onMarkerClick(Marker marker) {                                                       //sets up an on marker click listener
                 String mrkr = (String) marker.getTag();                                                 //gets the tag from the marker
                 if(mrkr != null) {                                                                      //if the marker tag isn't null
-                    markerLat = marker.getPosition().latitude;
-                    markerLng = marker.getPosition().longitude;
-                    directions(markerLat, markerLng);
+                    markerLat = marker.getPosition().latitude;                                          //take the latitude and longitude of the map marker
+                    markerLng = marker.getPosition().longitude;                                         //and passes it to a function that sends the coordinates of the users location
+                    directions(markerLat, markerLng);                                                   //and the cordinates of the map marker and gets a json string back with directions between both
                     return true;
-                    /*switch (mrkr) {                                                                     //a switch case that takes the latitude and longitude of the map marker
-                        case "one":                                                                     //and passes it to a function that sends the coordinates of the users location
-                            resetCamera();                                                              //and the cordinates of the map marker and gets a json string back with directions between both
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "two":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "three":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "four":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "five":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "six":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "seven":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "eight":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "nine":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "ten":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "eleven":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "twelve":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "thirteen":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "fourteen":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "fifteen":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "sixteen":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "seventeen":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "eighteen":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "nineteen":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "twenty":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "twentyone":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "twentytwo":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "twentythree":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        case "twentyfour":
-                            markerLat = marker.getPosition().latitude;
-                            markerLng = marker.getPosition().longitude;
-                            directions(markerLat, markerLng);
-                            break;
-                        default:
-                            break;
-                    }*/
                 }
                 resetCamera();
                 return true;
             }
 
         });
-        //mMap.setOnMarkerClickListener(new );
     }
 
     @Override
@@ -411,22 +294,14 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         locLong = mCurrentLocation.getLongitude();
 
         distance_calc();                                                                                            //run the distance calculation function
-
+        Log.i("Location Function", "intent extra boolean: " + intentExtras);
+        if(intentExtras == true){                                                                                   //check the intent extras boolean
+            directions(intentMarkerLat, intentMarkerLng);                                                           //run the directions function with the coordinates from the smsm receiver
+            intentExtras = false;                                                                                   //set the bollean back to false to avoid repeatedly running the function
+        }
     }
 
-    public void distance_calc(){                                                                                    //this calculates the distance from the centre of campus and the user's current location
-        /*double dLat = Math.toRadians(54.570792 - locLat);
-        double dLon = Math.toRadians(-1.234907 - locLong);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(locLat)) * Math.cos(Math.toRadians(54.570792)) *
-                        Math.sin(dLon/2) * Math.sin(dLon/2);
-        double c2 = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-        //6378.1 is gravity of earth
-        distance =  c2*6378.1;
-        distance = distance * 0.621371;
-        campusCentre = distance * 1609.34;*/
-
+    public void distance_calc(){
         LocationFunctions lf = new LocationFunctions();
 
         campusCentre =  lf.TotalDistance(54.570792, locLat, -1.234907,locLong);                     //checks to see how far from the centre of campus the user is

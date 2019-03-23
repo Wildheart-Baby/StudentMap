@@ -55,10 +55,6 @@
             android:name=".PlacesSearch"
             android:label="@string/title_activity_current_location"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-            <intent-filter>
-                <action android:name="com.google.android.gms.actions.SEARCH_ACTION"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <receiver android:name=".SmsReciever" android:enabled="true" android:exported="true">
             <intent-filter>

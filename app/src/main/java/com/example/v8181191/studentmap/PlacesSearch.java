@@ -56,18 +56,6 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Intent intent = getIntent();
-        if (SearchIntents.ACTION_SEARCH.equals(intent.getAction())){
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            fragment = (SearchResultsFragment)getFragmentManager().findFragmentById(R.id.frgSearchResults); //sets up a reference to the search results fragment
-            //searchString = search;                                                                          //sets the search term to the searchString variable
-            if(fragment !=null){                                                                            //if the fragment exists on the screen
-                fragment.searchPlaces(query);                                                              //pass the search term to the search places function in the search results fragment
-            }
-            //doMySearch(query);
-            Log.i("Places SearchItems", query);
-        }
-
         placesContainer = (RelativeLayout)findViewById(R.id.fragment_container) ;
         checkConnection(); //runs the checkConnection function
         json = (TextView)findViewById(R.id.txtJson);

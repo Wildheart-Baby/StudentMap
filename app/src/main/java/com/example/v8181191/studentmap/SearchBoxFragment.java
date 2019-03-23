@@ -95,10 +95,8 @@ public class SearchBoxFragment extends Fragment {
                 PlacesSearch.json.setText("");
                 searchTerm = searchBox.getText().toString();
                 if (searches.contains(searchTerm)) {
-                    Toast.makeText(getContext(), "SearchItems in array", Toast.LENGTH_LONG).show();
                     mListener.onReceiveSearch(searchTerm);
                 } else {
-                    Toast.makeText(getContext(), "New search", Toast.LENGTH_LONG).show();
                     db.addSearch(new SearchItems(searchTerm));
                     mListener.onReceiveSearch(searchTerm);
                     setAutoAdpater();

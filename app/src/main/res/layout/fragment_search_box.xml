@@ -28,7 +28,7 @@
             android:layout_marginTop="5dp"
             android:ems="10"
             android:focusableInTouchMode="true"
-            android:hint="searchItems"
+            android:hint="search term"
             android:inputType="textPersonName" />
 
     </RelativeLayout>

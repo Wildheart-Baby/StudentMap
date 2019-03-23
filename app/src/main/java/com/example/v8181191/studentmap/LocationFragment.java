@@ -170,8 +170,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         if(placeId.contains(place_id)){
 
         } else {
-            Toast.makeText(getContext(),"Trying to add favourite",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(),"Trying to add favourite",Toast.LENGTH_SHORT).show();
             db.addFavourite(new FavouriteItems(place_name, place_photo, place_open, place_id, place_type, place_address, place_rating, place_cost, place_number_ratings));
+            placeId.clear();
+            placeId = db.getPlaceIds();
+            getActivity().invalidateOptionsMenu();
         }
     }
 
@@ -199,6 +202,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         Maps = view.findViewById(R.id.imgLocation);
 
         placeId = new ArrayList<>();
+        placeId.clear();
         setHasOptionsMenu(true);
         placeId  = db.getPlaceIds();
 
