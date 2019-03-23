@@ -42,6 +42,7 @@ public class SmsReciever extends BroadcastReceiver{         //sets the class up 
                     message[i] = SmsMessage.createFromPdu((byte[])mypdu[i]);                    //puts the content of the mypdu object into the message string array
                     msg = message[i].getMessageBody();                                          //sets the message body to the msg string
                     phoneNo = message[i].getOriginatingAddress();                               //sets the originating address to the phone number string
+
                 }
                 Toast.makeText(context, "Message: " +msg +"\nNumber: " +phoneNo, Toast.LENGTH_LONG).show();     //shows a toast message with the messge contents
             }

@@ -59,12 +59,17 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         Intent intent = this.getIntent();
         if (SearchIntents.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.i("Places Search", query);
+            Log.i("Places SearchItems", query);
         }
 
         placesContainer = (RelativeLayout)findViewById(R.id.fragment_container) ;
         checkConnection(); //runs the checkConnection function
         json = (TextView)findViewById(R.id.txtJson);
+
+        if (getIntent().getAction() != null && getIntent().getAction().equals("android.intent.action.SEARCH")) {
+            String query = getIntent().getStringExtra(SearchManager.QUERY);
+            Log.i("Query:",query);   //query is the search word
+        }
 
     }
 
@@ -78,13 +83,24 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
     }
 
     @Override
-    public void onReceiveLocationId(String location, Double userLat, Double userLng) {      //takes the location id, of the place clicked on in the search results listview, along with the users latitude and longitude
+    public void onReceiveLocationId(String location, Double userLat, Double userLng, String name, String placePhoto, String open, String placetype, String address, Double placerating, int cost, int numberratings) {      //takes the location id, of the place clicked on in the search results listview, along with the users latitude and longitude
 
         LocationFragment LocFragment = new LocationFragment();                              //sets up a reference to the location fragment
         Bundle args = new Bundle();                                                         //sets up the bundle for the fragment
-        args.putString(LocationFragment.ARG_PLACE, location);                               //puts the location, latitude and longitude into the bundle
+        args.putString("ARG_PLACE_ID", location);                               //puts the location, latitude and longitude into the bundle
         args.putDouble("ARG_USERLAT", userLat);
         args.putDouble("ARG_USERLNG", userLng);
+        args.putString("ARG_NAME", name);
+        args.putString("ARG_PLACEPHOTO", placePhoto);
+        args.putString("ARG_OPEN", open);
+        args.putString("ARG_PLACE_TYPE", placetype);
+        args.putString("ARG_ADDRESS", address);
+        args.putDouble("ARG_PLACE_RATING", placerating);
+        args.putInt("ARG_COST", cost);
+        args.putInt("ARG_NUMBER_RATINGS", numberratings);
+                //String open, String placetype, String address, Double placerating, int cost, int numberratings
+
+        Log.i("SMR2", "place id: "+location + " lat: " + userLat + " lng: " + userLng + " name:" +  name + " photo:" + placePhoto + " open: " + open + " type: " + placetype + " address: " + address + " rating: " + placerating + " cost: " + cost + " number: " + numberratings);
 
         LocFragment.setArguments(args);                                                     //sets the arguments for the location fragment
 
@@ -113,11 +129,21 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         } else if (id == R.id.action_place_search) {
             //Intent intent = new Intent(this, PlacesSearch.class);//opens a new screen when the shopping list is clicked
             //startActivity(intent);
+        }else if (id == R.id.action_place_favourites) {
+            loadFavourites();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void loadFavourites() {
+        fragment = (SearchResultsFragment) getFragmentManager().findFragmentById(R.id.frgSearchResults); //sets up a reference to the search results fragment
+        //searchString = search;                                                                          //sets the search term to the searchString variable
+        if (fragment != null) {                                                                            //if the fragment exists on the screen
+            fragment.loadPlaces();
+        }
     }
 
     // Method to manually check connection status
@@ -151,5 +177,6 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
     public void onNetworkConnectionChanged(boolean isConnected) {
         showSnack(isConnected);
     }
+
 
 }

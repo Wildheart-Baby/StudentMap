@@ -61,12 +61,15 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     String url, placePhoto, placeOpenTimes, placeType, kept, searchString;
     GoogleApiClient mGoogleApiClient;
     private android.location.Location mCurrentLocation;
-    Double locLat, locLong;
+    Double locLat, locLong, placerating;
     ArrayList<PlaceItems> placeList;
 
     ListView results;
-    String placeid;
+    String placeid, placename, open, placetype, address;
     Boolean firstTime = true;
+    int cost, numberratings;
+    DatabaseHelper db;
+    ArrayList<String> favourites;
 
 
     public SearchResultsFragment() {
@@ -96,7 +99,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         if (getArguments() != null) {
 
         }
-
+        db = new DatabaseHelper(getContext());
 
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
@@ -117,7 +120,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
             getPlaces(savedInstanceState.getString("search_key"));
             firstTime = savedInstanceState.getBoolean("first_time");
         }
-
+        favourites = new ArrayList<>();
         //json = view.findViewById(R.id.txtJson);
         results = view.findViewById(R.id.lvResults);
         results.requestFocus();
@@ -126,8 +129,17 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {//on clicking a shopping list
                 if(ConnectivityReceiver.isConnected() == true){
                 PlaceItems placeListItems = (PlaceItems) arg0.getItemAtPosition(arg2);//read the item at the list position that has been clicked
-                placeid = placeListItems.getPlaceId();//get the name of the shopping list table
-                lListener.onReceiveLocationId(placeid, locLat, locLong);
+                placeid = placeListItems.getPlaceId();//get the id of the location
+                placename = placeListItems.getPlaceName();
+                placePhoto = placeListItems.getPlacePhoto();
+                open = placeListItems.getOpenTimes();
+                placetype = placeListItems.getPlaceType();
+                address = placeListItems.getPlaceAddress();
+                placerating = placeListItems.getRating();
+                cost = placeListItems.getCost();
+                numberratings = placeListItems.getNumberRatings();
+                Log.i("SMR1",placeid + " " + locLat + " " + locLong + " " + placename + " " + placePhoto + " " + open + " " + placetype + " " + address + " " + placerating + " " + cost + " " + numberratings);
+                lListener.onReceiveLocationId(placeid, locLat, locLong, placename, placePhoto, open, placetype, address, placerating, cost, numberratings);
                 } else { Toast.makeText(getActivity(), "Sorry you are't connected to the intenet", Toast.LENGTH_LONG).show();    }   //shows a toast message informing the user they aren't connected to the internet
             }
         });
@@ -244,6 +256,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                     placeListItems.setCost(0);
                                 }
                                 try {
+
                                     placeListItems.setRating(places.getJSONObject(i).getDouble("rating"));
                                 } catch(org.json.JSONException exception){
                                     placeListItems.setRating(0.0);
@@ -256,9 +269,9 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                 placeListItems.setPlaceType(placeType);
 
                                 try {
-                                    placeListItems.setNumberRatings(places.getJSONObject(i).getString("user_ratings_total"));
+                                    placeListItems.setNumberRatings(places.getJSONObject(i).getInt("user_ratings_total"));
                                 } catch (JSONException e) {
-                                    placeListItems.setNumberRatings("0");
+                                    placeListItems.setNumberRatings(0);
                                 }
                                 placeList.add(placeListItems);
                                 PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
@@ -337,8 +350,17 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         getPlaces(url);
     }
 
+    public void loadPlaces(){
+       placeList = new ArrayList<PlaceItems>();//sets up an array list called placeList
+       placeList.clear();//clear the placeList array
+       placeList = db.getFavourites();
+       Log.i("SRF0", ""+placeList.size());
+      PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
+      results.setAdapter(plce);
+    }
+
     public interface LocationListener {
-        void onReceiveLocationId(String search, Double userLat, Double userLng);
+        void onReceiveLocationId(String search, Double userLat, Double userLng, String name, String placePhoto, String open, String placetype, String address, Double placerating, int cost, int numberratings);
     }
 
 

@@ -23,7 +23,7 @@
 
     <string name="action_campus_map">Campus map</string>
     <string name="action_current_location">Current location</string>
-    <string name="action_place_search">Place search</string>
+    <string name="action_place_search">Place searchItems</string>
     <string name="action_place_favourite">Favourites</string>
 
     <string name="DistanceOverlay">calculating distance...</string>

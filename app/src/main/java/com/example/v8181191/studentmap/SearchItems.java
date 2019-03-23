@@ -4,16 +4,16 @@ package com.example.v8181191.studentmap;
  * Created by Wildheart on 17/03/2019.
  */
 
-public class Search {
+public class SearchItems {
 
     String search;
 
-    public Search(String search)
+    public SearchItems(String search)
     {
         this.search = search;
     }
 
-    public Search() {
+    public SearchItems() {
         //this.search=search;
 
     }

@@ -8,10 +8,11 @@ import android.graphics.Bitmap;
 
 public class PlaceItems {
     private Double lat, lng, rating;
-    private String name, description, photo, open, place_id, place_type, number_ratings, address;
+    private String name, description, photo, open, place_id, place_type, address;
     private Long sunrise, sunset;
     private Bitmap  placePhoto;
-    private int cost;
+    private int cost, number_ratings;
+
 
 
 
@@ -42,8 +43,8 @@ public class PlaceItems {
     public String getPlaceId() {return place_id;}
     public void setPlaceId(String place_id) {this.place_id = place_id;}
 
-    public String getNumberRatings() {return number_ratings;}
-    public void setNumberRatings(String number_ratings) {this.number_ratings = number_ratings;}
+    public int getNumberRatings() {return number_ratings;}
+    public void setNumberRatings(int number_ratings) {this.number_ratings = number_ratings;}
 
     public Double getRating() {return rating;}
     public void setRating(Double rating) {this.rating = rating;}

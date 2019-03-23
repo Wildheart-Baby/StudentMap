@@ -12,6 +12,9 @@ import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -36,6 +39,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,23 +55,40 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static String ARG_PLACE;
+    public static String ARG_PLACE_ID;
     public static Double ARG_USERLAT;
     public static Double ARG_USERLNG;
+    public static String ARG_NAME;
+    public static String ARG_PLACEPHOTO;
+    public static String ARG_OPEN;
+    public static String ARG_PLACE_TYPE;
+    public static String ARG_ADDRESS;
+    public static Double ARG_PLACE_RATING;
+    public static int ARG_COST;
+    public static int ARG_NUMBER_RATINGS;
 
     LatLng placeMarker;
     private GoogleMap mMap;
+    MenuItem fav;
 
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String place_id;
     private String mParam2;
+    private Double locLat;
     String url, ot, conPhone;
-    Double locLat, locLong, userLat, userLng, totalDistance;
+    //Double locLat, locLong, userLat, userLng, totalDistance;
+    Double locLong, userLat, userLng, totalDistance;
     TextView name, address, opentimes, phonenumber, locdistance;
     LocationFunctions lf;
     String tDistance;
     ImageButton Phone, Maps;
+    ArrayList<String>placeId;
+    DatabaseHelper db;
+    String place_name, place_photo, place_open, place_type, place_address;
+    Double place_rating;
+    int place_cost, place_number_ratings;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -93,16 +115,64 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PLACE);
+            place_id = getArguments().getString("ARG_PLACE_ID");
             userLat = getArguments().getDouble("ARG_USERLAT");
             userLng = getArguments().getDouble("ARG_USERLNG");
-
+            place_name = getArguments().getString("ARG_NAME");
+            place_photo = getArguments().getString("ARG_PLACEPHOTO");
+            place_open = getArguments().getString("ARG_OPEN");
+            place_type = getArguments().getString("ARG_PLACE_TYPE");
+            place_address = getArguments().getString("ARG_ADDRESS");
+            place_rating = getArguments().getDouble("ARG_PLACE_RATING");
+            place_cost = getArguments().getInt("ARG_COST");
+            place_number_ratings = getArguments().getInt("ARG_NUMBER_RATINGS");
+            Log.i("SMR3", "place id: " + place_id + " lat: " + userLat + " lng: " + userLng + " name: " + place_name + " photo:" + place_photo + " open: " + place_open + " type:" + place_type + " address: " + place_address + " rating: " + place_rating + " cost: " + place_cost + "number:  " + place_number_ratings );
         }
         //createLocationFragment();
-        loadPlaces(mParam1, userLat, userLng);
+        db = new DatabaseHelper(getContext());
+        loadPlaces(place_id, userLat, userLng);
         lf = new LocationFunctions();
 
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.location_fragment_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+
+        //getActivity().invalidateOptionsMenu();
+        //fav = menu.findItem(R.id.action_place_favourites);
+        if(placeId.contains(place_id)){
+            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.star_fill));
+        }
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_favourite:
+                // do stuff
+                addFavourite();
+                return true;
+        }
+
+        return false;
+    }
+
+    private void addFavourite(){
+        if(placeId.contains(place_id)){
+
+        } else {
+            Toast.makeText(getContext(),"Trying to add favourite",Toast.LENGTH_SHORT).show();
+            db.addFavourite(new FavouriteItems(place_name, place_photo, place_open, place_id, place_type, place_address, place_rating, place_cost, place_number_ratings));
+        }
     }
 
     private void createLocationFragment (){
@@ -127,6 +197,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         locdistance = view.findViewById(R.id.txtMiles);
         Phone = view.findViewById(R.id.imgPhone);
         Maps = view.findViewById(R.id.imgLocation);
+
+        placeId = new ArrayList<>();
+        setHasOptionsMenu(true);
+        placeId  = db.getPlaceIds();
 
         Phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,8 +286,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     public void loadPlaces(String place, final Double userLat, final Double userLng){
         Log.i("StudMapLF", "running function");
-        url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + mParam1 +"&fields=name,formatted_address,geometry,photos,opening_hours,formatted_phone_number&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
-
+        url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + place_id +"&fields=name,formatted_address,geometry,photos,opening_hours,formatted_phone_number&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+        Log.i("SMR4", url);
         RequestQueue queue = Volley.newRequestQueue(getActivity()); //sets up a reference to the volley library queue
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -221,7 +295,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onResponse(String response) {
 
-                        Log.i("SMR", response);
+                        //Log.i("SMR5", response);
                         try {
 
                             JSONObject placeData = new JSONObject(response);

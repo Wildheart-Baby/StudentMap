@@ -2,6 +2,7 @@ package com.example.v8181191.studentmap;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -141,7 +142,10 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         lf = new LocationFunctions();
         //if (mMap != null){ mapFragment.getView().setClickable(false); }
 
-
+        if (getIntent().getAction() != null && getIntent().getAction().equals("android.intent.action.SEARCH")) {
+            String query = getIntent().getStringExtra(SearchManager.QUERY);
+            Log.i("Query:",query);   //query is the search word
+        }
 
 
     }
