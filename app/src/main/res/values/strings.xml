@@ -27,7 +27,7 @@
     <string name="action_place_favourite">Favourites</string>
 
     <string name="DistanceOverlay">calculating distance...</string>
-    <string name="CampusKey">1 The Curve (T)\n2 Library (L)\n3 Students’ Union\n4 Greig (G)\n5 Europa (IT/OL)\n6 Victoria (V)\n7 Mercuria (MC)\n8 Olympia (OLY)\n9 Centuria (H)\nCenturia South (HS)\n10 Business School\n11 Clarendon (CL)\n12 Waterhouse (W)\n13 Student Life\n14 Middlesbrough Tower (M)\n15 Constantine (C)\n16 Stephenson (IC)\n17 Cook (CK)\n18 Foster (F)\n19 Phoenix (P)\n20 Education House\n21 Orion (CE)\n22 Athena (A)\n23 University House (UH)\n24 Aurora (AH)\nP Parking</string>
+    <string name="CampusKey">1 The Curve (T)\n2 Library (L)\n3 Students’ Union\n4 Greig (G)\n5 Europa (IT/OL)\n6 Victoria (V)\n7 Mercuria (MC)\n8 Olympia (OLY)\n9 Centuria (H)\nCenturia South (HS)\n10 Business School\n11 Clarendon (CL)\n12 Waterhouse (W)\n13 Student Life\n14 Middlesbrough Tower (M)\n15 Constantine (C)\n16 Stephenson (IC)\n17 Cook (CK)\n18 Foster (F)\n19 Phoenix (P)\n20 Education House\n21 Orion (CE)\n22 Athena (A)\n23 University House (UH)\n24 Aurora (AH)\n26 The Printworks\nP Parking\nAccomodation</string>
     <string name="Search_Box_Fragment">Search</string>
 
 

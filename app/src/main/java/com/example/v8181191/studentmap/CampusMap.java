@@ -92,6 +92,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     private static final int COLOR_BUILDING_ARGB = 0xffEFEC68;
     private static final int POLYGON_STROKE_WIDTH_PX = 0;
     private static final int COLOR_PATH_WHITE = 0xffFFFFFF;
+    private static final int COLOR_ACCOMODATION_BLUE = 0xff0169B0;
 
 
     //private LatLngBounds CampusBounds = new LatLngBounds(
@@ -321,6 +322,113 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
 
     public void addBuildings(){
 
+        mMap.addPolygon(new PolygonOptions()                                            //sets up all the overlay polygons used for the campus map, using latitude and longitude coordinates, along with a colour to fill the polygon
+                        .clickable(true)
+                        .add(new LatLng(54.568332,-1.236941),
+        new LatLng(54.568335,-1.23698),
+        new LatLng(54.568848,-1.236879),
+        new LatLng(54.568873,-1.237161),
+        new LatLng(54.569122,-1.237114),
+        new LatLng(54.569118,-1.237043),
+        new LatLng(54.569563,-1.23712),
+        new LatLng(54.569564,-1.23676),
+        new LatLng(54.569592,-1.236747),
+        new LatLng(54.569604,-1.236724),
+        new LatLng(54.569619,-1.236701),
+        new LatLng(54.569626,-1.236672),
+        new LatLng(54.569636,-1.236616),
+        new LatLng(54.570059,-1.236524),
+        new LatLng(54.570109,-1.237198),
+        new LatLng(54.570141,-1.23719),
+        new LatLng(54.570134,-1.237084),
+        new LatLng(54.570123,-1.236882),
+        new LatLng(54.570261,-1.236802),
+        new LatLng(54.570369,-1.236787),
+        new LatLng(54.570588,-1.237025),
+        new LatLng(54.570605,-1.237055),
+        new LatLng(54.570613,-1.237177),
+        new LatLng(54.57064,-1.237148),
+        new LatLng(54.57065,-1.237124),
+        new LatLng(54.570688,-1.237109),
+        new LatLng(54.570721,-1.237139),
+        new LatLng(54.570796,-1.238106),
+        new LatLng(54.570818,-1.238105),
+        new LatLng(54.570798,-1.237787),
+        new LatLng(54.570809,-1.237693),
+        new LatLng(54.570758,-1.23696),
+        new LatLng(54.570738,-1.236963),
+        new LatLng(54.570695,-1.236306),
+        new LatLng(54.570695,-1.236276),
+        new LatLng(54.570704,-1.236262),
+        new LatLng(54.571021,-1.236207),
+        new LatLng(54.571014,-1.236081),
+        new LatLng(54.570993,-1.236084),
+        new LatLng(54.57095,-1.235535),
+        new LatLng(54.571345,-1.235461),
+        new LatLng(54.571447,-1.235627),
+        new LatLng(54.571614,-1.235592),
+        new LatLng(54.571746,-1.235591),
+        new LatLng(54.571797,-1.235603),
+        new LatLng(54.571955,-1.235581),
+        new LatLng(54.571964,-1.23566),
+        new LatLng(54.571973,-1.235709),
+        new LatLng(54.571991,-1.235762),
+        new LatLng(54.572019,-1.235803),
+        new LatLng(54.572056,-1.235831),
+        new LatLng(54.572091,-1.235841),
+        new LatLng(54.572137,-1.235833),
+        new LatLng(54.572169,-1.235808),
+        new LatLng(54.572228,-1.235778),
+        new LatLng(54.572337,-1.237372),
+        new LatLng(54.572389,-1.237364),
+        new LatLng(54.572257,-1.235392),
+        new LatLng(54.572183,-1.235403),
+        new LatLng(54.572135,-1.234842),
+        new LatLng(54.5719,-1.234911),
+        new LatLng(54.571671,-1.234937),
+        new LatLng(54.571648,-1.23522),
+        new LatLng(54.571417,-1.235379),
+        new LatLng(54.570613,-1.23552),
+        new LatLng(54.570536,-1.234438),
+        new LatLng(54.570416,-1.234443),
+        new LatLng(54.570468,-1.235025),
+        new LatLng(54.570382,-1.235214),
+        new LatLng(54.570323,-1.235284),
+        new LatLng(54.570262,-1.235322),
+        new LatLng(54.570174,-1.235355),
+        new LatLng(54.570108,-1.23534),
+        new LatLng(54.570038,-1.235299),
+        new LatLng(54.56998,-1.23523),
+        new LatLng(54.569993,-1.235448),
+        new LatLng(54.569997,-1.235665),
+        new LatLng(54.570052,-1.236459),
+        new LatLng(54.569869,-1.236495),
+        new LatLng(54.56977,-1.236517),
+        new LatLng(54.569609,-1.236554),
+        new LatLng(54.569601,-1.236539),
+        new LatLng(54.569587,-1.236519),
+        new LatLng(54.569569,-1.236506),
+        new LatLng(54.569548,-1.236492),
+        new LatLng(54.569495,-1.235728),
+        new LatLng(54.569472,-1.235728),
+        new LatLng(54.569518,-1.236487),
+        new LatLng(54.569497,-1.236513),
+        new LatLng(54.569474,-1.236546),
+        new LatLng(54.569462,-1.236581),
+        new LatLng(54.56946,-1.236621),
+        new LatLng(54.569475,-1.236688),
+        new LatLng(54.56948,-1.236707),
+        new LatLng(54.569414,-1.236727),
+        new LatLng(54.569425,-1.236918),
+        new LatLng(54.569107,-1.23684),
+        new LatLng(54.569079,-1.236903),
+        new LatLng(54.569087,-1.237055),
+        new LatLng(54.568892,-1.237098),
+        new LatLng(54.568869,-1.236839))
+                .fillColor(COLOR_PATH_WHITE)
+                .strokeWidth(POLYGON_STROKE_WIDTH_PX));
+
+
         building1 = mMap.addPolygon(new PolygonOptions()                                            //sets up all the overlay polygons used for the campus map, using latitude and longitude coordinates, along with a colour to fill the polygon
                 .clickable(true)
                 .add(new LatLng(54.570621,-1.237067),
@@ -402,7 +510,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building2.setTag("2");
         buildingTwo = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(54.569961,-1.236089))
+                .position(new LatLng(54.56994,-1.236062))
                 .title("Library (L)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.two_marker)));
         buildingTwo.setTag("two");
@@ -495,7 +603,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building5.setTag("5"); //54.569639,-1.23419
         buildingFive = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(54.569639,-1.23419))
+                .position(new LatLng(54.569629,-1.233857))
                 .title("Europa (IT/OL)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.five_marker)));
         buildingFive.setTag("five");
@@ -564,7 +672,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building8.setTag("8");
         buildingEight = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(54.569124,-1.236141))
+                .position(new LatLng(54.569225,-1.236051))
                 .title("Olympia (OLY)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.eight_marker)));
         buildingEight.setTag("eight");
@@ -599,7 +707,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         buildingNine.setTag("nine");
 
         buildingTen = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(54.571083,-1.235672))
+                .position(new LatLng(54.571159,-1.235746))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ten_marker)));
         buildingTen.setTag("ten");
@@ -622,7 +730,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building11.setTag("11");
         buildingEleven = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(54.57124,-1.236662))
+                .position(new LatLng(54.571377,-1.236829))
                 .title("Centuria (H)")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.eleven_marker)));
         buildingEleven.setTag("eleven");
@@ -799,7 +907,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
         building22.setTag("22");
         buildingTwentyTwo = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(54.570711,-1.233218))
+                .position(new LatLng(54.57069,-1.233283))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_two_marker)));
         buildingTwentyTwo.setTag("twentytwo");
 
@@ -843,6 +951,11 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .position(new LatLng(54.570768,-1.234372))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_four_marker)));
          buildingTwentyFour.setTag("twentyfour");
+
+        buildingTwentyFour = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(54.572285,-1.232833))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.twenty_six_marker)));
+        buildingTwentyFour.setTag("twentyfive");
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -939,7 +1052,19 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .position(new LatLng(54.571407,-1.234379))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_marker)));
 
-                mMap.addPolygon(new PolygonOptions()
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(54.570747,-1.23252))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_marker)));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(54.569033,-1.233824))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.accomodation_marker)));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(54.572304,-1.237356))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.accomodation_marker)));
+
+        mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.571648,-1.236563),
                         new LatLng(54.571668,-1.236559),
                         new LatLng(54.571677,-1.236655),
@@ -950,6 +1075,20 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                         new LatLng(54.571653,-1.236347),
                         new LatLng(54.571662,-1.236483),
                         new LatLng(54.571642,-1.236488))
+                .strokeColor(COLOR_ROAD_ARGB)
+                .strokeWidth(2));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.570711,-1.232814),
+                        new LatLng(54.570705,-1.23272),
+                        new LatLng(54.571146,-1.232637),
+                        new LatLng(54.571108,-1.232149),
+                        new LatLng(54.570804,-1.232208),
+                        new LatLng(54.570758,-1.231658),
+                        new LatLng(54.570405,-1.231722),
+                        new LatLng(54.570471,-1.232781),
+                        new LatLng(54.57067,-1.232733),
+                        new LatLng(54.570676,-1.232812))
                 .strokeColor(COLOR_ROAD_ARGB)
                 .strokeWidth(2));
 
@@ -1302,6 +1441,117 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_GRASS_ARGB)
                 .strokeWidth(0));
 
+        //accomodation
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.572333,-1.23572),
+                        new LatLng(54.572451,-1.23744),
+                        new LatLng(54.572554,-1.237421),
+                        new LatLng(54.572433,-1.235696))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.571595,-1.237707),
+        new LatLng(54.571587,-1.237562),
+        new LatLng(54.572299,-1.237406),
+        new LatLng(54.57231,-1.237524))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.569344,-1.233942),
+        new LatLng(54.569322,-1.233625),
+        new LatLng(54.569296,-1.233629),
+        new LatLng(54.569292,-1.233589),
+        new LatLng(54.56922,-1.233602),
+        new LatLng(54.569244,-1.233959),
+        new LatLng(54.569268,-1.233957),
+        new LatLng(54.569272,-1.233996),
+        new LatLng(54.569323,-1.23399),
+        new LatLng(54.569321,-1.233949))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.56931,-1.233445),
+        new LatLng(54.569303,-1.233317),
+        new LatLng(54.569095,-1.23335),
+        new LatLng(54.569096,-1.233394),
+        new LatLng(54.569059,-1.233403),
+        new LatLng(54.569055,-1.233366),
+        new LatLng(54.568842,-1.233406),
+        new LatLng(54.568856,-1.233536),
+        new LatLng(54.568879,-1.233531),
+        new LatLng(54.568885,-1.233572),
+        new LatLng(54.568954,-1.23356),
+        new LatLng(54.568957,-1.233594),
+        new LatLng(54.568994,-1.233587),
+        new LatLng(54.568993,-1.233553),
+        new LatLng(54.569288,-1.233493),
+        new LatLng(54.569286,-1.233451))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.568816,-1.233776),
+        new LatLng(54.568793,-1.233459),
+        new LatLng(54.568772,-1.233463),
+        new LatLng(54.568767,-1.233422),
+        new LatLng(54.56869,-1.233434),
+        new LatLng(54.568717,-1.233795))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.568779,-1.234341),
+        new LatLng(54.568994,-1.234302),
+        new LatLng(54.568982,-1.234127),
+        new LatLng(54.568909,-1.234142),
+        new LatLng(54.568907,-1.234113),
+        new LatLng(54.568841,-1.234118),
+        new LatLng(54.568842,-1.234152),
+        new LatLng(54.568772,-1.234162))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.568623,-1.234566),
+        new LatLng(54.568603,-1.234569),
+        new LatLng(54.568604,-1.234611),
+        new LatLng(54.568551,-1.234623),
+        new LatLng(54.568547,-1.234582),
+        new LatLng(54.568524,-1.234583),
+        new LatLng(54.568513,-1.234459),
+        new LatLng(54.568503,-1.234463),
+        new LatLng(54.568498,-1.23439),
+        new LatLng(54.568511,-1.23439),
+        new LatLng(54.568499,-1.234224),
+        new LatLng(54.568572,-1.234212),
+        new LatLng(54.568575,-1.234253),
+        new LatLng(54.568603,-1.23425))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.568466,-1.234569),
+        new LatLng(54.568454,-1.234439),
+        new LatLng(54.568357,-1.234456),
+        new LatLng(54.568356,-1.234437),
+        new LatLng(54.568316,-1.234447),
+        new LatLng(54.568316,-1.234461),
+        new LatLng(54.568249,-1.234478),
+        new LatLng(54.568261,-1.234653),
+        new LatLng(54.568333,-1.23464),
+        new LatLng(54.568335,-1.234673),
+        new LatLng(54.568374,-1.234664),
+        new LatLng(54.568373,-1.23463),
+        new LatLng(54.568447,-1.234616),
+        new LatLng(54.568444,-1.234574))
+                .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+
+        //roads
         mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.568266,-1.235244),
                         new LatLng(54.569108,-1.235118),
@@ -1418,6 +1668,27 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                         new LatLng(54.57123,-1.232764),
                         new LatLng(54.571304,-1.23391),
                         new LatLng(54.572639,-1.233607))
+                .fillColor(COLOR_ROAD_ARGB)
+                .strokeWidth(POLYGON_STROKE_WIDTH_PX));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.568204,-1.238485),
+        new LatLng(54.570103,-1.237793),
+        new LatLng(54.570017,-1.236713),
+        new LatLng(54.570064,-1.236693),
+        new LatLng(54.570141,-1.237789),
+        new LatLng(54.570698,-1.23766),
+        new LatLng(54.570702,-1.237723),
+        new LatLng(54.570147,-1.237845),
+        new LatLng(54.568216,-1.238568))
+                .fillColor(COLOR_ROAD_ARGB)
+                .strokeWidth(POLYGON_STROKE_WIDTH_PX));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.571254,-1.238335),
+        new LatLng(54.571097,-1.236152),
+        new LatLng(54.571055,-1.236171),
+        new LatLng(54.571217,-1.238343))
                 .fillColor(COLOR_ROAD_ARGB)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
 

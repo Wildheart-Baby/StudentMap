@@ -67,9 +67,10 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     ListView results;
     String placeid, placename, open, placetype, address;
     Boolean firstTime = true;
-    int cost, numberratings;
+    int cost, numberratings, cPic;
     DatabaseHelper db;
     ArrayList<String> favourites;
+    Boolean dloadFinished;
 
 
     public SearchResultsFragment() {
@@ -143,7 +144,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                 } else { Toast.makeText(getActivity(), "Sorry you are't connected to the intenet", Toast.LENGTH_LONG).show();    }   //shows a toast message informing the user they aren't connected to the internet
             }
         });
-
+        dloadFinished = false;
         return view;
     }
 
@@ -191,6 +192,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         placeList.clear();//clear the placeList array
 
         RequestQueue queue = Volley.newRequestQueue(getActivity()); //sets up a reference to the volley library queue
+        final RequestQueue pictureQueue = Volley.newRequestQueue(getActivity());
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -203,7 +205,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                             JSONObject placeData = new JSONObject(response);
                             //json.setText(response);
                             JSONArray places = placeData.getJSONArray("results");
-
+                            final int pics = places.length() - 1;
                             for (int i = 0; i < places.length(); i++){
 
                                 final PlaceItems placeListItems = new PlaceItems();
@@ -229,10 +231,45 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                 placeListItems.setPlaceId(places.getJSONObject(i).getString("place_id"));
                                 try {
                                     JSONArray photoItemArray = places.getJSONObject(i).getJSONArray("photos");
+
                                     for (int j=0; j < photoItemArray.length(); j++){
+
                                         placePhoto = photoItemArray.getJSONObject(j).getString("photo_reference");
                                         //placePhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + placePhoto + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+                                        /*String imgUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + placePhoto + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+                                        RequestQueue imageQueue = Volley.newRequestQueue(getActivity());
 
+                                        // Initialize a new ImageRequest
+                                        ImageRequest imageRequest = new ImageRequest(
+                                                imgUrl, // Image URL
+                                                new Response.Listener<Bitmap>() { // Bitmap listener
+                                                    @Override
+                                                    public void onResponse(Bitmap response) {
+                                                        // Do something with response
+                                                        placeListItems.setPhoto(response);
+                                                        if (cPic == pics){
+                                                            dloadFinished = true;
+                                                        }
+
+                                                    }
+                                                },
+                                                0, // Image width
+                                                0, // Image height
+                                                ImageView.ScaleType.CENTER_CROP, // Image scale type
+                                                Bitmap.Config.RGB_565, //Image decode configuration
+                                                new Response.ErrorListener() { // Error listener
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        // Do something with error response
+                                                        error.printStackTrace();
+                                                        //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                        );
+
+                                        // Add ImageRequest to the RequestQueue
+                                        imageQueue.add(imageRequest);
+                                        cPic ++;*/
                                     }
 
                                 } catch(org.json.JSONException exception){
@@ -290,8 +327,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
             }
         });
         queue.add(stringRequest);
-        //PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
-        //results.setAdapter(plce);
+
     }
 
     @Override

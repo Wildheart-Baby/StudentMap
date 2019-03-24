@@ -89,6 +89,7 @@ public class PlacesAdapter extends BaseAdapter{
         photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + photo + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
         Glide.with(context).load(photo).into(holder.placephoto);
         //Glide.with(context).load(placeListItems.getPhoto()).into(holder.placephoto);
+        //holder.placephoto.setImageBitmap(placeListItems.getPhoto());
 
         if (placeListItems.getOpenTimes() == "true"){
             holder.opentimes.setText("Open Now");

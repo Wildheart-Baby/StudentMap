@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="false"
-        app:headerLayout="@layout/nav_header_campus_map"
+        app:headerLayout="@layout/nav_header_place_search"
         app:menu="@menu/places_search" />
 
 </android.support.v4.widget.DrawerLayout>
