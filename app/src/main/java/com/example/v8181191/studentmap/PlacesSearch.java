@@ -59,7 +59,8 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         placesContainer = (RelativeLayout)findViewById(R.id.fragment_container) ;
         checkConnection(); //runs the checkConnection function
         json = (TextView)findViewById(R.id.txtJson);
-
+        //Intent intent = getIntent();
+        //if (.equals(intent.getAction())) {}
 
     }
 

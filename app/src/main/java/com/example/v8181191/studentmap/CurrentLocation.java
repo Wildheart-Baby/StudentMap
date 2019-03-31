@@ -45,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CurrentLocation extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -65,6 +66,10 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
     String weatherMain, weatherDescription, weatherIcon, theWeather, sunriseTime, sunsetTime, weatherCTemp;
     int coverid;
     ImageView weatherImage;
+
+
+    DatabaseHelper db;
+    ArrayList<GPSItems> MP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,8 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        db = new DatabaseHelper(this);
+
     }
 
     @Override
@@ -114,6 +121,7 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
         }
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
         mMap.setMyLocationEnabled(false);
+        //loadMapMarkerPlaces();
     }
 
     @Override
@@ -330,4 +338,5 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

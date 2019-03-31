@@ -21,7 +21,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/include3"
         layout="@layout/content_campus_map3" />
 
     <TextView
@@ -41,6 +41,7 @@
         android:text="@string/DistanceOverlay"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

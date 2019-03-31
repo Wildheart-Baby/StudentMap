@@ -5,7 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -20,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "shopsInfo";
+    private static final String DATABASE_NAME = "StudMap.db";
 
     // Table names
     private static final String TABLE_SEARCHES = "searches";
@@ -161,5 +169,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return favouritesList;
     }
 
-}
+
+    }
 

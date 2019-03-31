@@ -44,7 +44,11 @@
             android:layout_toRightOf="@+id/imgWeather"
             android:gravity="center_vertical"
             android:textAllCaps="false"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="0.2"/>
 
         <ImageView
             android:id="@+id/imgWeather"

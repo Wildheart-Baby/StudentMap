@@ -48,7 +48,7 @@
             android:name=".CampusMap"
             android:label="@string/title_activity_campus_map"
             android:screenOrientation="portrait"
-            android:theme="@style/MapLoadTheme"> <!-- android:theme="@style/Theme.AppCompat.NoActionBar" -->
+            android:theme="@style/Theme.AppCompat.NoActionBar"> <!-- android:theme="@style/Theme.AppCompat.NoActionBar" --><!-- android:theme="@style/MapLoadTheme" -->
 
         </activity>
         <activity

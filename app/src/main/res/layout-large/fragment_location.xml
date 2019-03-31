@@ -1,0 +1,167 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frgLocation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
+    android:background="@color/CampusMapGray"
+    tools:context="com.example.v8181191.studentmap.LocationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/txtAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtName"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/imgLocation"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+        <View
+            android:id="@+id/Divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/imgLocation"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/place_autocomplete_search_hint" />
+
+        <TextView
+            android:id="@+id/txtOpenTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txtPhoneNumber"
+            android:layout_alignTop="@+id/imgTime"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+        <View
+            android:id="@+id/Divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/imgPhone"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/place_autocomplete_search_hint" />
+
+        <TextView
+            android:id="@+id/txtPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txtAddress"
+            android:layout_alignTop="@+id/imgPhone"
+            android:layout_marginTop="7dp"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+    <View
+        android:id="@+id/Divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txtOpenTimes"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/place_autocomplete_search_hint" />
+
+    <ImageButton
+        android:id="@+id/imgPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imgLocation"
+        android:layout_below="@+id/Divider1"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/lf_phone" />
+
+    <ImageView
+        android:id="@+id/imgTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/imgPhone"
+        android:layout_alignStart="@+id/imgPhone"
+        android:layout_below="@+id/imgPhone"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/lf_clock" />
+
+        <ImageButton
+            android:id="@+id/imgLocation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/txtName"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/lf_map2" />
+
+        <TextView
+            android:id="@+id/txtMiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txtOpenTimes"
+            android:layout_alignTop="@+id/imgDistance"
+            android:layout_below="@+id/Divider3"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/imgDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/Divider3"
+        android:layout_below="@+id/Divider3"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/lf_distance" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/txtMiles"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/black"
+            android:padding="2dp">
+
+            <fragment
+                android:id="@+id/mvLocation"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:layout_width="500dp"
+                android:layout_height="500dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                map:uiRotateGestures="false"
+                map:uiScrollGestures="false"
+                map:uiTiltGestures="false"
+                map:uiZoomControls="false" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

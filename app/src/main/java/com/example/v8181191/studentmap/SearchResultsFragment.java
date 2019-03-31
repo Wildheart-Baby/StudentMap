@@ -67,7 +67,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
     ListView results;
     String placeid, placename, open, placetype, address;
     Boolean firstTime = true;
-    int cost, numberratings, cPic;
+    int cost, numberratings, cPic, jCount;
     DatabaseHelper db;
     ArrayList<String> favourites;
     Boolean dloadFinished;
@@ -190,10 +190,9 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
         searchString = url;
         placeList = new ArrayList<PlaceItems>();//sets up an array list called placeList
         placeList.clear();//clear the placeList array
-
         RequestQueue queue = Volley.newRequestQueue(getActivity()); //sets up a reference to the volley library queue
         final RequestQueue pictureQueue = Volley.newRequestQueue(getActivity());
-
+        cPic = 0;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -218,6 +217,7 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                 } catch(org.json.JSONException exception){
                                     //kept = "none";
                                     kept = places.getJSONObject(i).getString("formatted_address");
+                                    Log.i("test", kept);
                                     if(kept.contains(","))  {
                                         kept = kept.substring(0, kept.indexOf(","));
                                     }
@@ -247,8 +247,11 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                                     public void onResponse(Bitmap response) {
                                                         // Do something with response
                                                         placeListItems.setPhoto(response);
+                                                        cPic ++;
                                                         if (cPic == pics){
-                                                            dloadFinished = true;
+                                                            //dloadFinished = true;
+                                                            PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
+                                                            results.setAdapter(plce);
                                                         }
 
                                                     }
@@ -268,8 +271,8 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
                                         );
 
                                         // Add ImageRequest to the RequestQueue
-                                        imageQueue.add(imageRequest);
-                                        cPic ++;*/
+                                        imageQueue.add(imageRequest);*/
+
                                     }
 
                                 } catch(org.json.JSONException exception){
@@ -391,9 +394,59 @@ public class SearchResultsFragment extends Fragment implements GoogleApiClient.O
        placeList.clear();//clear the placeList array
        placeList = db.getFavourites();
        Log.i("SRF0", ""+placeList.size());
+       /*final int pics = placeList.size();
+       cPic = 0;
+        for (jCount=0; jCount < placeList.size(); jCount++){
+            final PlaceItems placeListItems = new PlaceItems();
+            placePhoto = placeList.get(jCount).getPlacePhoto();
+            //placePhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + placePhoto + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+            String imgUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=125&maxheight=82&photoreference=" + placePhoto + "&key=AIzaSyAMOEaHPdbKbeFf2hpcZVncKv47drjHCaw";
+            RequestQueue imageQueue = Volley.newRequestQueue(getActivity());
+
+            // Initialize a new ImageRequest
+            ImageRequest imageRequest = new ImageRequest(
+                    imgUrl, // Image URL
+                    new Response.Listener<Bitmap>() { // Bitmap listener
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            // Do something with response
+                            //placeListItems.set(j).setPhoto(response);
+                            placeList.get(jCount -1).setPhoto(response);
+                            //placeListItems.setPhoto(response);
+                            cPic ++;
+                            if (cPic == pics){
+                                //dloadFinished = true;
+                                PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
+                                results.setAdapter(plce);
+                            }
+
+                        }
+                    },
+                    0, // Image width
+                    0, // Image height
+                    ImageView.ScaleType.CENTER_CROP, // Image scale type
+                    Bitmap.Config.RGB_565, //Image decode configuration
+                    new Response.ErrorListener() { // Error listener
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Do something with error response
+                            error.printStackTrace();
+                            //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+            );
+
+            // Add ImageRequest to the RequestQueue
+            imageQueue.add(imageRequest);
+
+        }*/
+
+
       PlacesAdapter plce = new PlacesAdapter(getActivity(), placeList);
       results.setAdapter(plce);
     }
+
+
 
     public interface LocationListener {
         void onReceiveLocationId(String search, Double userLat, Double userLng, String name, String placePhoto, String open, String placetype, String address, Double placerating, int cost, int numberratings);

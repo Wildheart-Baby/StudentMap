@@ -85,6 +85,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     Double locLat, locLong, campusCentre, distance, markerLat, markerLng, intentMarkerLat, intentMarkerLng;
     Context context;
     Boolean intentExtras = false;
+    DatabaseHelper db;
 
     private static final int COLOR_ORANGE_ARGB = 0xFFF25E21;                                                //sets up the colours used by the overlay
     private static final int COLOR_ROAD_ARGB = 0xff4D5156;
@@ -150,8 +151,9 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
             intentMarkerLat = extras.getDouble("ARG_MARKERLAT");            //get the latitude
             intentMarkerLng = extras.getDouble("ARG_MARKERLNG");            //get the longitude
             intentExtras = true;                                                //set the boolean as true
-
         }
+
+        db = new DatabaseHelper(this);
 
     }
     @Override
@@ -287,7 +289,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
 
         llCurrentLocation = new LatLng(this.mCurrentLocation.getLatitude(), this.mCurrentLocation.getLongitude());  //set the current loacation to the LatLng object
 
-        mCurrLocationMarker =  mMap.addMarker(new MarkerOptions()                                                   //add a marker at the current position with a custom location icon
+       mCurrLocationMarker =  mMap.addMarker(new MarkerOptions()                                                   //add a marker at the current position with a custom location icon
                 .position(llCurrentLocation)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_marker)));
 
@@ -295,11 +297,15 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         locLong = mCurrentLocation.getLongitude();
 
         distance_calc();                                                                                            //run the distance calculation function
-        Log.i("Location Function", "intent extra boolean: " + intentExtras);
+
         if(intentExtras == true){                                                                                   //check the intent extras boolean
             directions(intentMarkerLat, intentMarkerLng);                                                           //run the directions function with the coordinates from the smsm receiver
             intentExtras = false;                                                                                   //set the bollean back to false to avoid repeatedly running the function
         }
+
+
+        float zoom = mMap.getCameraPosition().zoom;
+        Log.i("Campus Zoom", "Zoom: " + zoom);
     }
 
     public void distance_calc(){
@@ -386,9 +392,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         new LatLng(54.572135,-1.234842),
         new LatLng(54.5719,-1.234911),
         new LatLng(54.571671,-1.234937),
-        new LatLng(54.571648,-1.23522),
-        new LatLng(54.571417,-1.235379),
-        new LatLng(54.570613,-1.23552),
+        new LatLng(54.570611, -1.235476),
         new LatLng(54.570536,-1.234438),
         new LatLng(54.570416,-1.234443),
         new LatLng(54.570468,-1.235025),
@@ -1441,6 +1445,32 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_GRASS_ARGB)
                 .strokeWidth(0));
 
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.57168,-1.235033),
+                        new LatLng(54.571646,-1.235347),
+                        new LatLng(54.571648,-1.235372),
+                        new LatLng(54.571652,-1.235403),
+                        new LatLng(54.571657,-1.235427),
+                        new LatLng(54.571663,-1.235449),
+                        new LatLng(54.571676,-1.235465),
+                        new LatLng(54.571892,-1.23541),
+                        new LatLng(54.571858,-1.2353))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.571718,-1.235025),
+        new LatLng(54.571782,-1.235017),
+        new LatLng(54.571785,-1.235049),
+        new LatLng(54.571871,-1.23503),
+        new LatLng(54.571881,-1.235161),
+        new LatLng(54.571908,-1.235152),
+        new LatLng(54.571928,-1.235402),
+        new LatLng(54.571914,-1.235405),
+        new LatLng(54.571877,-1.235276))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
         //accomodation
         mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.572333,-1.23572),
@@ -1693,10 +1723,10 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
 
 
-        Resources.Theme theme = super.getTheme();                                     //gets the current theme used by the activity
-        theme.applyStyle(R.style.CampusPreload, true);                          //set the theme of the activity to the campus preload theme
+        //Resources.Theme theme = super.getTheme();                                     //gets the current theme used by the activity
+        //theme.applyStyle(R.style.CampusPreload, true);                          //set the theme of the activity to the campus preload theme
         //navigationView.setBackgroundResource(R.drawable.drawer_background);
-        navigationView.setBackgroundColor(getResources().getColor(R.color.CampusMapKey));           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
+        //navigationView.setBackgroundColor(getResources().getColor(R.color.CampusMapKey));           //sets the background of the navigation drawer to overwrite the initial them image, to make the navigation drawer usable
 
 
 
