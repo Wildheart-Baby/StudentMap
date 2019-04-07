@@ -69,7 +69,7 @@ public class CurrentLocation extends AppCompatActivity implements OnMapReadyCall
 
 
     DatabaseHelper db;
-    ArrayList<GPSItems> MP;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
