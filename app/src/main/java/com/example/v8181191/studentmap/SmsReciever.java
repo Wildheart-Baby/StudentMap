@@ -94,6 +94,25 @@ public class SmsReciever extends BroadcastReceiver{         //sets the class up 
         return contactName;                                                                                                 //passes back the contact name
     }
 
+    public String getContactName(final String phoneNumber, Context context)                                                 //function to get the name connected to the message sender
+    {
+        Uri uri=Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));              //sets up the uri to check the contacts with the phone number from the text message
+
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};                                      //sets up a string array for the display name matching the message phone number
+
+        String contactName="";                                                                                             //sets up and clears the contact name string
+        Cursor cursor=context.getContentResolver().query(uri,projection,null,null,null);    //sets up a cursor with the uri and the string array
+
+        if (cursor != null) {                                                                                               //checks the cursor isn't null
+            if(cursor.moveToFirst()) {                                                                                      //moves to the start of the contacts database
+                contactName=cursor.getString(0);                                                                //gets the value from the first column of the record
+            }
+            cursor.close();                                                                                                 //closes the cursor
+        }
+
+        return contactName;                                                                                                 //passes back the contact name
+    }
+
     private void sendPath(String bn, Context context){
         switchToMap = new Intent(context, CampusMap.class);                             //sets up and intent that switches to the campus map activity
         extras = new Bundle();                                                          //sets up the bundle called extras
