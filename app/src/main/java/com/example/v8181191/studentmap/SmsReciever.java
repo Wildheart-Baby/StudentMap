@@ -3,7 +3,10 @@ package com.example.v8181191.studentmap;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,7 +25,7 @@ public class SmsReciever extends BroadcastReceiver{         //sets the class up 
 
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";       //sets a string with the broadcast message type
     private static final String TAG = "SmsBroadcastReceiver";                                   //sets up a tag name
-    String msg, phoneNo, theMessage;
+    String msg, phoneNo, theMessage, phNum;
     Boolean campusMap;
     CampusMap cm;
     Intent switchToMap;
@@ -47,6 +50,12 @@ public class SmsReciever extends BroadcastReceiver{         //sets the class up 
                     message[i] = SmsMessage.createFromPdu((byte[])mypdu[i]);                    //puts the content of the mypdu object into the message string array
                     msg = message[i].getMessageBody();                                          //sets the message body to the msg string
                     phoneNo = message[i].getOriginatingAddress();                               //sets the originating address to the phone number string
+                    phNum = getContactName(phoneNo, context);
+
+                    if(phNum.isEmpty()){                                                        //checks to see if the variable is empty
+                        phNum = phoneNo;                                                        //copies the value of phnoeNo to the variable
+                    }
+
                     String bn;
                     campusMap = false;
                     //.substring(example.lastIndexOf(" ") + 1)
@@ -59,10 +68,30 @@ public class SmsReciever extends BroadcastReceiver{         //sets the class up 
                     }
                 }
                 if(campusMap==false) {                                                          //if the boolean is false
-                    Toast.makeText(context, "Message: " + msg + "\nNumber: " + phoneNo, Toast.LENGTH_LONG).show();     //show a toast message with the messge contents
+                    //Toast.makeText(context, "Message: " + msg + "\nNumber: " + phoneNo, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "From: " + phNum +"\nMessage: " + msg , Toast.LENGTH_LONG).show();          //show a toast message with the message contents
                 }
             }
         }
+    }
+
+    public String getContactName(final String phoneNumber, Context context)                                                 //function to get the name connected to the message sender
+    {
+        Uri uri=Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));              //sets up the uri to check the contacts with the phone number from the text message
+
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};                                      //sets up a string array for the display name matching the message phone number
+
+        String contactName="";                                                                                             //sets up and clears the contact name string
+        Cursor cursor=context.getContentResolver().query(uri,projection,null,null,null);    //sets up a cursor with the uri and the string array
+
+        if (cursor != null) {                                                                                               //checks the cursor isn't null
+            if(cursor.moveToFirst()) {                                                                                      //moves to the start of the contacts database
+                contactName=cursor.getString(0);                                                                //gets the value from the first column of the record
+            }
+            cursor.close();                                                                                                 //closes the cursor
+        }
+
+        return contactName;                                                                                                 //passes back the contact name
     }
 
     private void sendPath(String bn, Context context){
