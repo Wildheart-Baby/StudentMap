@@ -42,15 +42,6 @@ public class SearchBoxFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchBoxFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SearchBoxFragment newInstance(String param1, String param2) {
         SearchBoxFragment fragment = new SearchBoxFragment();
         Bundle args = new Bundle();
@@ -87,7 +78,7 @@ public class SearchBoxFragment extends Fragment {
             Log.i("SBF: : ", log);
         }
 
-        setAutoAdpater();
+        setAutoAdapter();
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +90,7 @@ public class SearchBoxFragment extends Fragment {
                 } else {
                     db.addSearch(new SearchItems(searchTerm));
                     mListener.onReceiveSearch(searchTerm);
-                    setAutoAdpater();
+                    setAutoAdapter();
                 }
 
             }
@@ -107,7 +98,7 @@ public class SearchBoxFragment extends Fragment {
         return view;
     }
 
-    public void setAutoAdpater(){
+    public void setAutoAdapter(){
         searches = db.getSearches();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, searches);
         searchBox.setThreshold(1);
@@ -130,20 +121,6 @@ public class SearchBoxFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
 
     public interface SearchListener {
         void onReceiveSearch(String search);

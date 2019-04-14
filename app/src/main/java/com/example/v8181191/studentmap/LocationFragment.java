@@ -51,7 +51,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class LocationFragment extends Fragment implements OnMapReadyCallback {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -72,7 +72,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     MenuItem fav;
 
 
-    // TODO: Rename and change types of parameters
     private String place_id;
     private String mParam2;
     private Double locLat;
@@ -102,7 +101,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
      *
      * @return A new instance of fragment LocationFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static LocationFragment newInstance() {
         LocationFragment fragment = new LocationFragment();
         Bundle args = new Bundle();
@@ -235,7 +234,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -279,7 +277,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
@@ -318,7 +315,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
                             totalDistance = lf.TotalDistance(locLat, userLat ,locLong, userLng);
                             tDistance = String.format("%.2f", totalDistance);
                             tDistance = tDistance + " miles from location";
-                            Log.i("StudMapLF", tDistance);
+                            Log.i("SMR5", name + " " + locLat + " " + locLong + " " + conPhone + " " +  ot + " " + tDistance);
                             opentimes.setText(ot);
                             locdistance.setText(tDistance);
                             startMap();
@@ -340,7 +337,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void makeCall(){
-        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + conPhone + "?call&video=true")); //use ACTION_CALL class  skype:username?call&video=true
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + conPhone )); //use ACTION_CALL class  skype:username?call&video=true
 
         //check permission
         //If the device is running Android 6.0 (API level 23) and the app's targetSdkVersion is 23 or higher,

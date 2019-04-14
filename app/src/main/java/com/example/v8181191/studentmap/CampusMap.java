@@ -432,8 +432,19 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_PATH_WHITE)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
 
+        mMap.addPolygon(new PolygonOptions()
+                .clickable(true)
+                .add(new LatLng(54.569993,-1.235595),
+        new LatLng(54.569143,-1.235465),
+                new LatLng(54.568925,-1.23515),
+        new LatLng(54.568957,-1.235139),
+        new LatLng(54.569152,-1.235419),
+        new LatLng(54.569989,-1.235545))
+                .fillColor(COLOR_PATH_WHITE)
+                .strokeWidth(POLYGON_STROKE_WIDTH_PX));
 
-        building1 = mMap.addPolygon(new PolygonOptions()                                            //sets up all the overlay polygons used for the campus map, using latitude and longitude coordinates, along with a colour to fill the polygon
+
+        building1 = mMap.addPolygon(new PolygonOptions()
                 .clickable(true)
                 .add(new LatLng(54.570621,-1.237067),
                         new LatLng(54.570585,-1.236558),
@@ -1445,7 +1456,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_GRASS_ARGB)
                 .strokeWidth(0));
 
-        mMap.addPolygon(new PolygonOptions()
+        /*mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.57168,-1.235033),
                         new LatLng(54.571646,-1.235347),
                         new LatLng(54.571648,-1.235372),
@@ -1469,7 +1480,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         new LatLng(54.571914,-1.235405),
         new LatLng(54.571877,-1.235276))
                 .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));
+                .strokeWidth(0));*/
 
         //accomodation
         mMap.addPolygon(new PolygonOptions()
@@ -1478,6 +1489,50 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                         new LatLng(54.572554,-1.237421),
                         new LatLng(54.572433,-1.235696))
                 .fillColor(COLOR_ACCOMODATION_BLUE)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.57164,-1.235518),
+                        new LatLng(54.571597,-1.235495),
+                        new LatLng(54.571542,-1.235433),
+                        new LatLng(54.571545,-1.23539),
+                        new LatLng(54.571548,-1.235338),
+                        new LatLng(54.571685,-1.235065),
+                        new LatLng(54.571733,-1.235045),
+                        new LatLng(54.571905,-1.235442),
+                        new LatLng(54.571908,-1.235488))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.571938,-1.23548),
+                        new LatLng(54.571963,-1.235473),
+                        new LatLng(54.571933,-1.23515),
+                        new LatLng(54.571877,-1.235157),
+                        new LatLng(54.571868,-1.234993),
+                        new LatLng(54.571816,-1.235002),
+                        new LatLng(54.571815,-1.234976),
+                        new LatLng(54.5718,-1.234979),
+                        new LatLng(54.571796,-1.234955),
+                        new LatLng(54.571777,-1.234955),
+                        new LatLng(54.571928,-1.235388))
+                .fillColor(COLOR_GRASS_ARGB)
+                .strokeWidth(0));
+
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(54.571972,-1.235372),
+                        new LatLng(54.571959,-1.235136),
+                        new LatLng(54.572005,-1.235125),
+                        new LatLng(54.572012,-1.23514),
+                        new LatLng(54.572019,-1.235158),
+                        new LatLng(54.572033,-1.235169),
+                        new LatLng(54.572042,-1.235177),
+                        new LatLng(54.572047,-1.235194),
+                        new LatLng(54.572048,-1.235234),
+                        new LatLng(54.572029,-1.235284),
+                        new LatLng(54.572004,-1.235336))
+                .fillColor(COLOR_GRASS_ARGB)
                 .strokeWidth(0));
 
         mMap.addPolygon(new PolygonOptions()
