@@ -45,23 +45,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.Dot;
-import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -76,7 +69,6 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
     NavigationView navigationView;
     RelativeLayout campusKey;
     int i;
-
 
     LatLng campus;
     LocationFunctions lf;
@@ -257,8 +249,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(5000);
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.RECEIVE_SMS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS}, 1);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.RECEIVE_SMS, Manifest.permission.CALL_PHONE}, 1);
             return;                                                                                         //ask for the persmissions the app requires
         }
 
@@ -440,19 +432,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .fillColor(COLOR_PATH_WHITE)
                 .strokeWidth(POLYGON_STROKE_WIDTH_PX));
 
-        mMap.addPolygon(new PolygonOptions()
-                .clickable(true)
-                .add(new LatLng(54.569993,-1.235595),
-        new LatLng(54.569143,-1.235465),
-                new LatLng(54.568925,-1.23515),
-        new LatLng(54.568957,-1.235139),
-        new LatLng(54.569152,-1.235419),
-        new LatLng(54.569989,-1.235545))
-                .fillColor(COLOR_PATH_WHITE)
-                .strokeWidth(POLYGON_STROKE_WIDTH_PX));
 
-
-        building1 = mMap.addPolygon(new PolygonOptions()
+        building1 = mMap.addPolygon(new PolygonOptions()                                            //sets up all the overlay polygons used for the campus map, using latitude and longitude coordinates, along with a colour to fill the polygon
                 .clickable(true)
                 .add(new LatLng(54.570621,-1.237067),
                         new LatLng(54.570585,-1.236558),
@@ -1465,56 +1446,6 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                 .strokeWidth(0));
 
         mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.569681,-1.235862),
-                        new LatLng( 54.569678,-1.235893),
-                        new LatLng(54.56967,-1.235928),
-                        new LatLng(54.569662,-1.235957),
-                        new LatLng(54.569654,-1.236004),
-                        new LatLng(54.569656,-1.236042),
-                        new LatLng(54.56966,-1.236115),
-                        new LatLng(54.569666,-1.236174),
-                        new LatLng(54.569677,-1.236244),
-                        new LatLng(54.569708,-1.236372),
-                        new LatLng(54.569741,-1.236476),
-                        new LatLng(54.569763,-1.236547),
-                        new LatLng(54.569622,-1.236575),
-                        new LatLng(54.569618,-1.236561),
-                        new LatLng(54.569609,-1.236545),
-                        new LatLng(54.569603,-1.236535),
-                        new LatLng(54.569589,-1.236514),
-                        new LatLng(54.569568,-1.2365),
-                        new LatLng(54.569562,-1.236496),
-                        new LatLng(54.569517,-1.235844),
-                        new LatLng(54.569662,-1.235844),
-                        new LatLng(54.569676,-1.235855))
-                .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));
-
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.569114,-1.235362),
-                        new LatLng(54.569135,-1.235361),
-                        new LatLng(54.569118,-1.235117),
-                        new LatLng(54.56896,-1.235142))
-                .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));
-
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.56899,-1.235562),
-                        new LatLng(54.569009,-1.23554),
-                        new LatLng(54.569028,-1.235528),
-                        new LatLng(54.569071,-1.235487),
-                        new LatLng(54.569116,-1.235464),
-                        new LatLng(54.569142,-1.235463),
-                        new LatLng(54.568939,-1.235172),
-                        new LatLng(54.56895,-1.235342),
-                        new LatLng(54.56897,-1.23534))
-                .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));
-
-
-        /*mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.57168,-1.235033),
                         new LatLng(54.571646,-1.235347),
                         new LatLng(54.571648,-1.235372),
@@ -1538,7 +1469,7 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         new LatLng(54.571914,-1.235405),
         new LatLng(54.571877,-1.235276))
                 .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));*/
+                .strokeWidth(0));
 
         //accomodation
         mMap.addPolygon(new PolygonOptions()
@@ -1548,52 +1479,6 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
                         new LatLng(54.572433,-1.235696))
                 .fillColor(COLOR_ACCOMODATION_BLUE)
                 .strokeWidth(0));
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.57164,-1.235518),
-                        new LatLng(54.571597,-1.235495),
-                        new LatLng(54.571542,-1.235433),
-                        new LatLng(54.571545,-1.23539),
-                        new LatLng(54.571548,-1.235338),
-                        new LatLng(54.571685,-1.235065),
-                        new LatLng(54.571733,-1.235045),
-                        new LatLng(54.571905,-1.235442),
-                        new LatLng(54.571908,-1.235488))
-                .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.571938,-1.23548),
-                        new LatLng(54.571963,-1.235473),
-                        new LatLng(54.571933,-1.23515),
-                        new LatLng(54.571877,-1.235157),
-                        new LatLng(54.571868,-1.234993),
-                        new LatLng(54.571816,-1.235002),
-                        new LatLng(54.571815,-1.234976),
-                        new LatLng(54.5718,-1.234979),
-                        new LatLng(54.571796,-1.234955),
-                        new LatLng(54.571777,-1.234955),
-                        new LatLng(54.571928,-1.235388))
-                .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));
-
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(54.571972,-1.235372),
-                        new LatLng(54.571959,-1.235136),
-                        new LatLng(54.572005,-1.235125),
-                        new LatLng(54.572012,-1.23514),
-                        new LatLng(54.572019,-1.235158),
-                        new LatLng(54.572033,-1.235169),
-                        new LatLng(54.572042,-1.235177),
-                        new LatLng(54.572047,-1.235194),
-                        new LatLng(54.572048,-1.235234),
-                        new LatLng(54.572029,-1.235284),
-                        new LatLng(54.572004,-1.235336))
-                .fillColor(COLOR_GRASS_ARGB)
-                .strokeWidth(0));
-
-
 
         mMap.addPolygon(new PolygonOptions()
                 .add(new LatLng(54.571595,-1.237707),
@@ -1858,7 +1743,8 @@ public class CampusMap extends AppCompatActivity implements OnMapReadyCallback, 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.action_campus_map){
-
+            //Intent intent = new Intent(this, MainActivity.class);//opens a new screen when the shopping list is clicked
+            //startActivity(intent);
         } else if (id == R.id.action_current_Location) {
             Intent intent = new Intent(this, CurrentLocation.class);//opens a new screen when the shopping list is clicked
             startActivity(intent);

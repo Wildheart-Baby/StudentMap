@@ -337,7 +337,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void makeCall(){
-        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + conPhone + "?call&video=true")); //use ACTION_CALL class  skype:username?call&video=true
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + conPhone )); //use ACTION_CALL class  skype:username?call&video=true
 
         //check permission
         //If the device is running Android 6.0 (API level 23) and the app's targetSdkVersion is 23 or higher,
