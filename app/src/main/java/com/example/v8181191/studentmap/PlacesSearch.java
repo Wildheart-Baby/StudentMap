@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 
 
-public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener, SearchResultsFragment.LocationListener, LocationFragment.OnFragmentInteractionListener,  NavigationView.OnNavigationItemSelectedListener, ConnectivityReceiver.ConnectivityReceiverListener{
+public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment.SearchListener, SearchResultsFragment.LocationListener, LocationFragment.OnFragmentInteractionListener,  NavigationView.OnNavigationItemSelectedListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     private final String TAG = "StudentMapApp";                                                             //sets up the strings and other elements used by the activity
     String searchString;
@@ -56,9 +56,9 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        placesContainer = (RelativeLayout)findViewById(R.id.fragment_container) ;
+        placesContainer = (RelativeLayout) findViewById(R.id.fragment_container);
         checkConnection(); //runs the checkConnection function
-        json = (TextView)findViewById(R.id.txtJson);
+        json = (TextView) findViewById(R.id.txtJson);
         //Intent intent = getIntent();
         //if (.equals(intent.getAction())) {}
 
@@ -66,9 +66,9 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
 
     @Override
     public void onReceiveSearch(String search) {                            //takes the search term from the search box fragment
-        fragment = (SearchResultsFragment)getFragmentManager().findFragmentById(R.id.frgSearchResults); //sets up a reference to the search results fragment
+        fragment = (SearchResultsFragment) getFragmentManager().findFragmentById(R.id.frgSearchResults); //sets up a reference to the search results fragment
         searchString = search;                                                                          //sets the search term to the searchString variable
-        if(fragment !=null){                                                                            //if the fragment exists on the screen
+        if (fragment != null) {                                                                            //if the fragment exists on the screen
             fragment.searchPlaces(search);                                                              //pass the search term to the search places function in the search results fragment
         }
     }
@@ -89,16 +89,18 @@ public class PlacesSearch extends AppCompatActivity implements SearchBoxFragment
         args.putDouble("ARG_PLACE_RATING", placerating);
         args.putInt("ARG_COST", cost);
         args.putInt("ARG_NUMBER_RATINGS", numberratings);
-                //String open, String placetype, String address, Double placerating, int cost, int numberratings
+        //String open, String placetype, String address, Double placerating, int cost, int numberratings
 
-        Log.i("SMR2", "place id: "+location + " lat: " + userLat + " lng: " + userLng + " name:" +  name + " photo:" + placePhoto + " open: " + open + " type: " + placetype + " address: " + address + " rating: " + placerating + " cost: " + cost + " number: " + numberratings);
+        Log.i("SMR2", "place id: " + location + " lat: " + userLat + " lng: " + userLng + " name:" + name + " photo:" + placePhoto + " open: " + open + " type: " + placetype + " address: " + address + " rating: " + placerating + " cost: " + cost + " number: " + numberratings);
 
         LocFragment.setArguments(args);                                                     //sets the arguments for the location fragment
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();          //sets up a reference to the  location fragment
-        transaction.replace(R.id.fragment_container, LocFragment);                          //replace the current layout fragments with the new fragment
-        transaction.addToBackStack(null);                                                   //sets the current fragments to behind the location fragment
-        transaction.commit();                                                               //push the transaction
+        if (findViewById(R.id.fragment_container) == null){
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();          //sets up a reference to the  location fragment
+            transaction.replace(R.id.fragment_container, LocFragment);                          //replace the current layout fragments with the new fragment
+            transaction.addToBackStack(null);                                                   //sets the current fragments to behind the location fragment
+            transaction.commit();                                                               //push the transaction
+        }
     }
 
     @Override

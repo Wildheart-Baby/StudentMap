@@ -87,7 +87,7 @@ public class LocationFunctions {
                         JSONArray stepsArray = leg.getJSONArray("steps");
 
 
-                        for (int i = 0; i < stepsArray.length(); i++){
+                        for (int i = 0; i < stepsArray.length(); i++){                              //for loop to add the gps coordinates to an array
                             //placeListItems = new PlaceItems();
                             mpLat = stepsArray.getJSONObject(i).getJSONObject("start_location").getDouble("lat");
                             mpLng = stepsArray.getJSONObject(i).getJSONObject("start_location").getDouble("lng");
@@ -100,7 +100,7 @@ public class LocationFunctions {
 
                         if( line != null)
                         {
-                            line.remove();
+                            line.remove();                                                      //clears the poly line from the map
                         }
 
                         List<PatternItem> pattern = Arrays.asList(new Dot(), new Gap(10));
